@@ -5,6 +5,10 @@ import io.quarkus.security.Authenticated;
 import io.quarkus.vertx.http.runtime.CurrentVertxRequest;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeType;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
+import org.eclipse.microprofile.openapi.annotations.security.SecuritySchemes;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -23,6 +27,11 @@ import java.util.*;
 
 
 @Path("/api")
+@SecuritySchemes(value = {
+    @SecurityScheme(securitySchemeName = "apiKey",
+        type = SecuritySchemeType.HTTP,
+        scheme = "Bearer")}
+)
 public class TokenResource {
 
     @Inject
@@ -46,13 +55,11 @@ public class TokenResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/token")
-    public Response token() throws IOException, InterruptedException {
+    public Response token(@HeaderParam("Authorization") final String auth_header) throws IOException, InterruptedException {
         Map<String, String> result = new HashMap<>();
-        String auth_header = "";
         String accessToken = "";
         String oktaTokenEndpoint = okta_issuer.get() + "/v1/token";
 
-        auth_header = request.getCurrent().request().getHeader("Authorization");
         if(auth_header == null){
             return Response.status(400, "No Authorization Header provided").build();
         }
@@ -83,9 +90,10 @@ public class TokenResource {
 
     @GET
     @Authenticated
+    @SecurityRequirement(name = "apiKey")
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/hello")
-    public String hello(@Context SecurityContext ctx) {
+    public String hello(@HeaderParam("Authorization") final String auth_header, @Context SecurityContext ctx) {
 
         String name;
         Principal principal = ctx.getUserPrincipal();
