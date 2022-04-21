@@ -4,8 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.alliancegenome</groupId>
   <artifactId>agr_mati</artifactId>
-  <name>AGR Minting and Tracking Identifiers (MaTI)</name>
   <version>1.0.0-SNAPSHOT</version>
+  <name>AGR Minting and Tracking Identifiers (MaTI)</name>
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
     <failsafe.useModulePath>false</failsafe.useModulePath>
@@ -32,6 +32,22 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-arc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-agroal</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-jdbc-postgresql</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-flyway</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-config-yaml</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>

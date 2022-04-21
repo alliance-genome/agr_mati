@@ -1,0 +1,24 @@
+mp:
+  jwt:
+    verify:
+      publickey:
+        location: ${OKTA_KEYS}
+      issuer: ${OKTA_ISSUER}
+
+okta:
+  client:
+    id: ${OKTA_CLIENT_ID}
+    secret: ${OKTA_CLIENT_SECRET}
+  scopes: ${OKTA_SCOPES}
+
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PWD}
+    jdbc:
+      max-size: 64
+  devservices:
+    image-name: postgres:14.2-alpine
+  flyway:
+    migrate-at-start: true
