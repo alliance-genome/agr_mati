@@ -18,7 +18,7 @@ quarkus:
     password: ${POSTGRES_PWD}
     jdbc:
       max-size: 64
-  devservices:
-    image-name: postgres:14.2-alpine
+    devservices:
+      image-name: postgres:14.2-alpine
   flyway:
     migrate-at-start: true

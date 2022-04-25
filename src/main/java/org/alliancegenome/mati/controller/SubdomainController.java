@@ -24,11 +24,11 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Subdomain", description = "subdomain Operations")
-@SecuritySchemes(value = {
-        @SecurityScheme(securitySchemeName = "apiKey",
-                type = SecuritySchemeType.HTTP,
-                scheme = "Bearer")}
-)
+//@SecuritySchemes(value = {
+//        @SecurityScheme(securitySchemeName = "apiKey",
+//                type = SecuritySchemeType.HTTP,
+//                scheme = "Bearer")}
+//)
 public class SubdomainController {
     private final SubdomainService subdomainService;
 
