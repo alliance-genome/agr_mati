@@ -1,6 +1,7 @@
 package org.alliancegenome.mati.entity;
 
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -14,19 +15,13 @@ import javax.validation.constraints.NotEmpty;
 @Entity(name = "Subdomain")
 @Table(name = "subdomain")
 @Data
-public class SubdomainEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-
-    @Column(name = "code")
-    @NotEmpty
+public class SubdomainEntity extends PanacheEntity  {
+    @Column @NotEmpty
     private String code;
 
-    @Column(name = "name")
+    @Column @NotEmpty
     private String name;
 
-    @Column(name = "description")
+    @Column
     private String description;
 }

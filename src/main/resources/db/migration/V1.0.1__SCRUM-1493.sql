@@ -1,5 +1,3 @@
-
-
 INSERT INTO subdomain (code, name, description)
 VALUES ( 'gene', 'Gene', 'Gene identifier');
 
