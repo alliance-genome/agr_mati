@@ -6,4 +6,4 @@ import org.alliancegenome.mati.entity.SubdomainEntity;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class SubdomainRepository implements PanacheRepositoryBase<SubdomainEntity, Integer> { }
+public class SubdomainRepository implements PanacheRepositoryBase<SubdomainEntity, Long> { }
