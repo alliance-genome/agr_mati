@@ -28,10 +28,7 @@ public class IdentifierResource {
     @Inject
     SubdomainSequenceRepository subdomainSequenceRepository;
 
-    @Authenticated
-    @GET
-    public Response get(@HeaderParam("Authorization") final String auth_header, @HeaderParam("subdomain") String subdomain) {
-        Long result = subdomainSequenceRepository.getValue(subdomain);
+    private Response makeResultResponse(Long result) {
         if(result == -1L) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -40,33 +37,26 @@ public class IdentifierResource {
             map.put("value", result);
             return Response.ok().entity(map).build();
         }
+    }
+
+    @Authenticated
+    @GET
+    public Response get(@HeaderParam("Authorization") final String auth_header, @HeaderParam("subdomain") String subdomain) {
+        Long result = subdomainSequenceRepository.getValue(subdomain);
+        return makeResultResponse(result);
     }
 
     @Authenticated
     @POST
     public Response increment(@HeaderParam("Authorization") final String auth_header, @HeaderParam("subdomain") String subdomain) {
         Long result = subdomainSequenceRepository.increment(subdomain);
-        if(result == -1L) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        else {
-            Map<String, Long> map = new HashMap<>();
-            map.put("value", result);
-            return Response.ok().entity(map).build();
-        }
+        return makeResultResponse(result);
     }
 
     @Authenticated
     @PUT
     public Response increment(@HeaderParam("Authorization") final String auth_header, @HeaderParam("subdomain") String subdomain, @HeaderParam("value") int value) {
         Long result = subdomainSequenceRepository.increment(subdomain, value);
-        if(result == -1L) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        else {
-            Map<String, Long> map = new HashMap<>();
-            map.put("value", result);
-            return Response.ok().entity(map).build();
-        }
+        return makeResultResponse(result);
     }
 }
