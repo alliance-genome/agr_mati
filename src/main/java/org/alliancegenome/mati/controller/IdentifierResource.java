@@ -2,6 +2,8 @@ package org.alliancegenome.mati.controller;
 
 import io.quarkus.security.Authenticated;
 import lombok.AllArgsConstructor;
+import org.alliancegenome.mati.entity.SubdomainEntity;
+import org.alliancegenome.mati.repository.SubdomainRepository;
 import org.alliancegenome.mati.repository.SubdomainSequenceRepository;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -27,14 +29,19 @@ public class IdentifierResource {
 
     @Inject
     SubdomainSequenceRepository subdomainSequenceRepository;
+    @Inject
+    SubdomainRepository subdomainRepository;
 
-    private Response makeResultResponse(Long result) {
-        if(result == -1L) {
+
+    private Response makeResultResponse(SubdomainEntity subdomainEntity, Long counter) {
+        if (counter == -1L) {
             return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        else {
-            Map<String, Long> map = new HashMap<>();
-            map.put("value", result);
+        } else {
+            Map<String, String> map = new HashMap<>();
+            StringBuffer identifier = new StringBuffer("AGRKB:");
+            identifier.append(subdomainEntity.getCode());
+            identifier.append(String.format("%0" + 12 + "d", counter));
+            map.put("value", identifier.toString());
             return Response.ok().entity(map).build();
         }
     }
@@ -42,21 +49,30 @@ public class IdentifierResource {
     @Authenticated
     @GET
     public Response get(@HeaderParam("Authorization") final String auth_header, @HeaderParam("subdomain") String subdomain) {
-        Long result = subdomainSequenceRepository.getValue(subdomain);
-        return makeResultResponse(result);
-    }
-
-    @Authenticated
-    @POST
-    public Response increment(@HeaderParam("Authorization") final String auth_header, @HeaderParam("subdomain") String subdomain) {
-        Long result = subdomainSequenceRepository.increment(subdomain);
-        return makeResultResponse(result);
+        SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
+        if (subdomainEntity == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        Long result = subdomainSequenceRepository.getValue(subdomainEntity);
+        return makeResultResponse(subdomainEntity, result);
     }
 
     @Authenticated
     @PUT
+    public Response increment(@HeaderParam("Authorization") final String auth_header, @HeaderParam("subdomain") String subdomain) {
+        SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
+        if (subdomainEntity == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        Long result = subdomainSequenceRepository.increment(subdomainEntity);
+        return makeResultResponse(subdomainEntity, result);
+    }
+
+    @Authenticated
+    @POST
     public Response increment(@HeaderParam("Authorization") final String auth_header, @HeaderParam("subdomain") String subdomain, @HeaderParam("value") int value) {
-        Long result = subdomainSequenceRepository.increment(subdomain, value);
-        return makeResultResponse(result);
+        SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
+        if (subdomainEntity == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        Long result = subdomainSequenceRepository.increment(subdomainEntity, value);
+        return makeResultResponse(subdomainEntity, result);
     }
 }
