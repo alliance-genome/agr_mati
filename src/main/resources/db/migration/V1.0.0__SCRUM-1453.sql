@@ -1,7 +1,7 @@
 CREATE TABLE subdomain
 (
   id   BIGSERIAL PRIMARY KEY,
-  code VARCHAR(4) UNIQUE NOT NULL,
+  code VARCHAR(3) UNIQUE NOT NULL,
   name VARCHAR(100)  NOT NULL,
   description VARCHAR(200)
 );

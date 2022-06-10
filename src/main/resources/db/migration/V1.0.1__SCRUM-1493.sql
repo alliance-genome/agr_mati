@@ -1,4 +1,3 @@
 INSERT INTO subdomain (code, name, description)
-VALUES ( 'gene', 'Gene', 'Gene identifier');
-
-CREATE SEQUENCE subdomain_gene_seq;
+VALUES ('101', 'disease_annotation', 'Disease Annotation');
+CREATE SEQUENCE subdomain_disease_annotation_seq;

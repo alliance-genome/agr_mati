@@ -5,5 +5,10 @@ import org.alliancegenome.mati.entity.SubdomainEntity;
 
 import javax.enterprise.context.ApplicationScoped;
 
+
 @ApplicationScoped
-public class SubdomainRepository implements PanacheRepositoryBase<SubdomainEntity, Long> { }
+public class SubdomainRepository implements PanacheRepositoryBase<SubdomainEntity, Long> {
+    public  SubdomainEntity findByName(String name){
+       return find("name", name).firstResult();
+   }
+}
