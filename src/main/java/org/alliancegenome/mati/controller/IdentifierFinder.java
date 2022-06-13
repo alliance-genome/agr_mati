@@ -43,10 +43,10 @@ public class IdentifierFinder {
             Long asNumber = Long.parseLong(counter);
             String status;
             if(subdomainSequenceRepository.getValue(subdomainEntity) > asNumber) {
-                status = "unassigned";
+                status = "assigned";
             }
             else {
-                status = "assigned";
+                status = "unassigned";
             }
             Map<String, String> map = new HashMap<>();
             map.put("status", status);
