@@ -8,7 +8,11 @@ import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class SubdomainRepository implements PanacheRepositoryBase<SubdomainEntity, Long> {
-    public  SubdomainEntity findByName(String name){
-       return find("name", name).firstResult();
+    public  SubdomainEntity findByCode(String code){
+       return find("code", code).firstResult();
    }
+
+    public  SubdomainEntity findByName(String name){
+        return find("name", name).firstResult();
+    }
 }
