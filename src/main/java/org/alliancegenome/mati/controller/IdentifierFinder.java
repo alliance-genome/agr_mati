@@ -30,7 +30,7 @@ public class IdentifierFinder {
     SubdomainRepository subdomainRepository;
 
     @GET
-    public Response increment(@HeaderParam("Authorization") final String auth_header, @HeaderParam("identifier") String identifier) {
+    public Response find(@HeaderParam("Authorization") final String auth_header, @HeaderParam("identifier") String identifier) {
         String trimmedID = identifier.trim();
         if (!trimmedID.startsWith("AGRKB:") || trimmedID.length() != 21)
             return Response.status(Response.Status.BAD_REQUEST).build();
