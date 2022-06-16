@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.alliancegenome</groupId>
   <artifactId>agr_mati</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0.0.0</version>
   <name>AGR Minting and Tracking Identifiers (MaTI)</name>
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
