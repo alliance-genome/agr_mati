@@ -1,0 +1,21 @@
+version: "3.2"
+
+services:
+
+  mati.app:
+    container_name: agr.mati.${NET}.api.server
+    image: 100225593120.dkr.ecr.us-east-1.amazonaws.com/agr_mati:${AGR_MATI_RELEASE}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: 'udp://logs.alliancegenome.org:12201'
+    ports:
+      - "8080:8080"
+    networks:
+      - mati
+    env_file:
+      - .env
+
+networks:
+  # The presence of these objects is sufficient to define them
+  mati:
