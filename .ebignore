@@ -15,3 +15,5 @@ Dockerfile
 .project
 README.md
 RELEASE-NOTES.md
+.env
+.env.*
