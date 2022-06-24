@@ -30,4 +30,4 @@ ENV QUARKUS_DATASOURCE_USERNAME postgres
 ENV QUARKUS_DATASOURCE_PASSWORD postgres
 
 # Start the application
-CMD ["java", "-Xmx15g", "-jar", "agr_mati-runner.jar"]
+CMD ["java", "-Xmx820m", "-jar", "agr_mati-runner.jar"]
