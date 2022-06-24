@@ -2,22 +2,22 @@ mp:
   jwt:
     verify:
       publickey:
-        location: ${OKTA_KEYS}
-      issuer: ${OKTA_ISSUER}
+        location: https://dev-00000.okta.com/oauth2/default/v1/keys
+      issuer: https://dev-000000.okta.com/oauth2/default
 
 okta:
   client:
-    id: ${OKTA_CLIENT_ID}
-    secret: ${OKTA_CLIENT_SECRET}
-  scopes: ${OKTA_SCOPES}
+    id: ""
+    secret: ""
+  scopes: openid%20profile%20email
 
 quarkus:
   datasource:
     db-kind: postgresql
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PWD}
+    username: postgres
+    password: postgres
     jdbc:
       max-size: 64
-      url: ${QUARKUS_DATASOURCE_JDBC_URL}
+      url: jdbc:postgresql://localhost:5432/mati
   flyway:
     migrate-at-start: true
