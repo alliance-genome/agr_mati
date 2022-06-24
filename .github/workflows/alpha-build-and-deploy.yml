@@ -67,8 +67,8 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: 'recursive'
-    - run: git fetch --prune --unshallow
-    - run: cp src/main/resources/application.properties.defaults src/main/resources/application.properties
+    - name: fetch all git tags
+      run: git fetch --prune --unshallow
     - name: Declare some variables
       id: vars
       shell: bash
