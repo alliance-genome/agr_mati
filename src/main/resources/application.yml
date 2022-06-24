@@ -21,3 +21,5 @@ quarkus:
       url: jdbc:postgresql://localhost:5432/mati
   flyway:
     migrate-at-start: true
+  swagger-ui:
+    always-include: true
