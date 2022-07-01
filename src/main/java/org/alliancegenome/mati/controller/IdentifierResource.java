@@ -2,12 +2,14 @@ package org.alliancegenome.mati.controller;
 
 import io.quarkus.security.Authenticated;
 import lombok.AllArgsConstructor;
+import org.alliancegenome.mati.configuration.ErrorResponse;
 import org.alliancegenome.mati.entity.SubdomainEntity;
 import org.alliancegenome.mati.repository.SubdomainRepository;
 import org.alliancegenome.mati.repository.SubdomainSequenceRepository;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -35,7 +37,9 @@ public class IdentifierResource {
 
     private Response makeResultResponse(SubdomainEntity subdomainEntity, Long counter) {
         if (counter == -1L) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier","Failure retrieving/incrementing the value");
+            ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
         } else {
             Map<String, String> map = new HashMap<>();
             StringBuffer identifier = new StringBuffer("AGRKB:");
@@ -48,30 +52,43 @@ public class IdentifierResource {
 
     @Authenticated
     @GET
-    public Response get(@HeaderParam("Authorization") final String auth_header, @HeaderParam("subdomain") String subdomain) {
+    public Response get(@NotNull(message = "Header does not have Authorization") @HeaderParam("Authorization") final String auth_header,
+                        @NotNull(message = "Header does not have subdomain") @HeaderParam("subdomain") String subdomain) {
         SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
-        if (subdomainEntity == null)
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        if (subdomainEntity == null) {
+            ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","ID subdomain " + subdomainEntity.getCode() +" not found");
+            ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
+        }
         Long result = subdomainSequenceRepository.getValue(subdomainEntity);
         return makeResultResponse(subdomainEntity, result);
     }
 
     @Authenticated
     @PUT
-    public Response increment(@HeaderParam("Authorization") final String auth_header, @HeaderParam("subdomain") String subdomain) {
+    public Response increment(@NotNull(message = "Header does not have Authorization") @HeaderParam("Authorization") final String auth_header,
+                              @NotNull(message = "Header does not have subdomain") @HeaderParam("subdomain") String subdomain) {
         SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
-        if (subdomainEntity == null)
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        if (subdomainEntity == null){
+            ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","ID subdomain " + subdomainEntity.getCode() +" not found");
+            ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
+        }
         Long result = subdomainSequenceRepository.increment(subdomainEntity);
         return makeResultResponse(subdomainEntity, result);
     }
 
     @Authenticated
     @POST
-    public Response increment(@HeaderParam("Authorization") final String auth_header, @HeaderParam("subdomain") String subdomain, @HeaderParam("value") int value) {
+    public Response increment(@NotNull(message = "Header does not have Authorization") @HeaderParam("Authorization") final String auth_header,
+                              @NotNull(message = "Header does not have subdomain") @HeaderParam("subdomain") String subdomain,
+                              @NotNull(message = "Header does not have increment value") @HeaderParam("value") int value) {
         SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
-        if (subdomainEntity == null)
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        if (subdomainEntity == null){
+            ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","ID subdomain " + subdomainEntity.getCode() +" not found");
+            ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
+        }
         Long result = subdomainSequenceRepository.increment(subdomainEntity, value);
         return makeResultResponse(subdomainEntity, result);
     }
