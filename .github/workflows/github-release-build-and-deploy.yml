@@ -20,7 +20,7 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: agr_curation
+        ECR_REPOSITORY: agr_mati
       run: |
         docker build --build-arg OVERWRITE_VERSION=${{ github.event.release.tag_name }} -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.event.release.tag_name }} .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.event.release.tag_name }}
@@ -30,7 +30,7 @@ jobs:
     steps:
     - name: Check out repository code
       uses: actions/checkout@v2
-    - name: Save curation app version to be deployed in EB env variables through config file
+    - name: Save mati app version to be deployed in EB env variables through config file
       run: |
         cat .ebextensions/version.config
         sed -i.bak "s/0.0.0/${{ github.event.release.tag_name }}/g" .ebextensions/version.config
