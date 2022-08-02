@@ -28,6 +28,26 @@ jobs:
     needs: [build-release-image]
     runs-on: ubuntu-20.04
     steps:
+    - name: Slack Notification
+      uses: tokorom/action-slack-incoming-webhook@main
+      env:
+        INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      with:
+        text: "Auto Deployment to mati production initiated"
+        attachments: |
+          [
+            {
+              "color": "good",
+              "author_name": "${{ github.actor }}",
+              "author_icon": "${{ github.event.sender.avatar_url }}",
+              "fields": [
+                {
+                  "title": "GitHub Actions URL",
+                  "value": "${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}"
+                }
+              ]
+            }
+          ]
     - name: Check out repository code
       uses: actions/checkout@v2
     - name: Save mati app version to be deployed in EB env variables through config file
@@ -68,7 +88,25 @@ jobs:
       env:
         INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       with:
-        text: "Deployment of release ${{ github.event.release.tag_name }} to production completed! :tada:"
+        text: "Deployment of release ${{ steps.vars.outputs.tagname }} to mati production completed! :tada:"
+        attachments: |
+          [
+            {
+              "color": "good",
+              "author_name": "${{ github.actor }}",
+              "author_icon": "${{ github.event.sender.avatar_url }}",
+              "fields": [
+                {
+                  "title": "Commit Message",
+                  "value": "${{ env.COMMIT_MESSAGE }}"
+                },
+                {
+                  "title": "Deployment URL",
+                  "value": "https://mati.alliancegenome.org/q/swagger-ui/index.html"
+                }
+              ]
+            }
+          ]
   deploy-to-beta:
     if: github.event.release.prerelease == true
     needs: [generate-deployment-package]
