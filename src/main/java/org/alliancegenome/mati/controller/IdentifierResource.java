@@ -31,12 +31,10 @@ import java.util.Map;
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Identifier", description = "identifier Operations")
 public class IdentifierResource {
-
     @Inject
     SubdomainSequenceRepository subdomainSequenceRepository;
     @Inject
     SubdomainRepository subdomainRepository;
-
 
     private String formatCounter(Long counter, SubdomainEntity subdomainEntity) {
         StringBuffer identifier = new StringBuffer("AGRKB:");
@@ -44,6 +42,7 @@ public class IdentifierResource {
         identifier.append(String.format("%0" + 12 + "d", counter));
         return identifier.toString();
     }
+
     private Response makeResultResponse(SubdomainEntity subdomainEntity, Long counter) {
         if (counter == -1L) {
             ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier","Failure retrieving/incrementing the counter");
