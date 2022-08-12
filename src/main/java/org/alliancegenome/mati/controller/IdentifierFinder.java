@@ -52,7 +52,7 @@ public class IdentifierFinder {
         try {
             Long asNumber = Long.parseLong(counter);
             String status;
-            if(subdomainSequenceRepository.getValue(subdomainEntity) > asNumber) {
+            if(subdomainSequenceRepository.getValue(subdomainEntity) >= asNumber) {
                 status = "assigned";
             }
             else {
