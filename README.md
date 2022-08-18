@@ -2,6 +2,9 @@
 
 ## Running the application in dev mode
 
+* Create an okta account for development and a new okta application following:
+https://developer.okta.com/blog/2020/12/17/build-and-secure-an-api-in-python-with-fastapi#setting-up-a-new-application-in-okta
+ 
 * Run a postgres instance (skip if you are already developing the curation app):
 https://github.com/alliance-genome/agr_curation/blob/alpha/docker/run_postgres
 
@@ -12,7 +15,7 @@ MP_JWT_VERIFY_PUBLICKEY_LOCATION=https://dev-$$$$$$.okta.com/oauth2/default/v1/k
 OKTA_TOKEN_URL=https://dev-$$$$$$.okta.com/oauth2/default/v1/token
 OKTA_CLIENT_ID=??????????
 OKTA_CLIENT_SECRET=?????????????????????????????????
-OKTA_SCOPES=openid%20profile%20email
+OKTA_SCOPES=?????????
 QUARKUS_DATASOURCE_USER=????????
 QUARKUS_DATASOURCE_PASSWORD=????????
 ```
@@ -68,5 +71,5 @@ url = 'http://localhost:8080/api/identifier'
 headers = {'Authorization': 'Bearer ' + token,
            'subdomain': 'disease_annotation'}
 response = requests.request("GET", url, headers=headers)
-print(response.text)
+print(response.json())
 ```
