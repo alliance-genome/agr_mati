@@ -1,5 +1,17 @@
 # agr_mati: Minting and Tracking Identifiers (MaTI)
 
+## Test MaTI on alpha and beta environments
+
+* Connect to the VPN for AGR-aws
+* Go to:
+  https://alpha-curation.alliancegenome.org/
+* After login, click on the top right user icon, then profile
+* Copy the okta token value (the long string) and use it in the swaggerUI:
+  https://alpha-mati.alliancegenome.org/q/swagger-ui/#
+  https://beta-mati.alliancegenome.org/q/swagger-ui/#
+* Clicking the Authorize button and pasting the okta token in the ApiKey entry
+* Test the endpoints in swagger 
+
 ## Running the application in dev mode
 
 * Create an okta account for development and a new okta application following:
@@ -29,16 +41,10 @@ QUARKUS_DATASOURCE_PASSWORD=????????
 http://localhost:8080/q/swagger-ui/
 
 
-* To use the endpoints in swagger, get an okta token from:
-https://alpha-curation.alliancegenome.org/
-after login, click on the top right user icon, then profile.
-Copy the okta token value and use it in the swaggerUI clicking
-the Authorize button and pasting the okta token in the ApiKey entry.
-
 ## Developing a client for the MaTI API
 
 The example is in Python, it can be adapted to other languages.
-It requires the .env file  
+It requires the .env file  and MaTI running on local 
 
 * Fetch a valid token from okta
 
