@@ -51,3 +51,14 @@ eb-deploy:
 
 eb-terminate:
 	@eb terminate ${ENV_NAME}
+
+test:
+	mvn test
+
+integration-test:
+	mvn -Dquarkus-profile=test clean package
+	mvn -ntp failsafe:integration-test
+	mvn failsafe:verify
+
+verify:
+	mvn verify

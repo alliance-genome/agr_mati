@@ -13,13 +13,32 @@ okta:
 
 quarkus:
   datasource:
-    db-kind: postgresql
+    jdbc:
+      driver: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5432/mati
     username: postgres
     password: postgres
-    jdbc:
-      max-size: 64
-      url: jdbc:postgresql://localhost:5432/mati
   flyway:
     migrate-at-start: true
+  hibernate-orm:
+    dialect: org.hibernate.dialect.PostgreSQL9Dialect
+    database:
+      generation: none
   swagger-ui:
     always-include: true
+
+"%dev":
+  quarkus:
+    flyway:
+      clean-at-start: true
+      log:
+        sql: true
+      statistics: true
+
+"%prod":
+  quarkus.flyway.clean-at-start: false
+
+"%test":
+  quarkus.datasource.jdbc:
+      driver: org.testcontainers.jdbc.ContainerDatabaseDriver
+      url: jdbc:tc:postgresql:13:///mati
