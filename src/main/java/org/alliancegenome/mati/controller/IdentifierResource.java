@@ -76,7 +76,7 @@ public class IdentifierResource {
                         @NotNull(message = "Header does not have subdomain") @HeaderParam("subdomain") String subdomain) {
         SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
         if (subdomainEntity == null) {
-            ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","ID subdomain " + subdomainEntity.getCode() +" not found");
+            ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","ID subdomain " + subdomain +" not found");
             ErrorResponse errorResponse = new ErrorResponse(errorMessage);
             return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
         }
@@ -90,7 +90,7 @@ public class IdentifierResource {
                               @NotNull(message = "Header does not have subdomain") @HeaderParam("subdomain") String subdomain) {
         SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
         if (subdomainEntity == null) {
-            ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","ID subdomain " + subdomainEntity.getCode() +" not found");
+            ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","ID subdomain " + subdomain +" not found");
             ErrorResponse errorResponse = new ErrorResponse(errorMessage);
             return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
         }
@@ -106,7 +106,7 @@ public class IdentifierResource {
                               @NotNull(message = "Header does not have increment value") @HeaderParam("value") int value) {
         SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
         if (subdomainEntity == null) {
-            ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier.post","ID subdomain " + subdomainEntity.getCode() +" not found");
+            ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier.post","ID subdomain " + subdomain +" not found");
             ErrorResponse errorResponse = new ErrorResponse(errorMessage);
             return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
         }
