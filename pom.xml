@@ -48,6 +48,11 @@
 		</repository>
 	</distributionManagement>
 
+   <scm>
+      <developerConnection>scm:git:git@github.com:alliance-genome/agr_mati.git</developerConnection>
+      <tag>HEAD</tag>
+   </scm>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
