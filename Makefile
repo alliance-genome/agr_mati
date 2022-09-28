@@ -39,6 +39,9 @@ reset-app-version:
 #EB commands
 .PHONY: eb-init eb-create eb-deploy eb-terminate
 
+apirun:
+	mvn compile quarkus:dev
+
 eb-init:
 	eb init --region ${AWS_DEFAULT_REGION} -p Docker mati-app
 
