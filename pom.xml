@@ -8,7 +8,9 @@
 	<artifactId>agr_mati</artifactId>
 	<version>0.0.0</version>
 	<name>AGR Minting and Tracking Identifiers (MaTI)</name>
+	<description>This software is for using the mati as a library</description>
 	<url>https://github.com/alliance-genome/agr_mati</url>
+
 	<properties>
 		<compiler-plugin.version>3.8.1</compiler-plugin.version>
 		<failsafe.useModulePath>false</failsafe.useModulePath>
@@ -49,7 +51,9 @@
 	</distributionManagement>
 
    <scm>
+		<connection>scm:git:git@github.com:alliance-genome/agr_mati.git</connection>
       <developerConnection>scm:git:git@github.com:alliance-genome/agr_mati.git</developerConnection>
+		<url>https://www.github.com/alliance-genome/agr_mati/tree/master</url>
       <tag>HEAD</tag>
    </scm>
 
@@ -173,6 +177,36 @@
 					</execution>
 				</executions>
 			</plugin>
+
+         <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.7</version>
+            <extensions>true</extensions>
+            <configuration>
+               <serverId>ossrh</serverId>
+               <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+               <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+            <executions>
+               <execution>
+                  <id>sign-artifacts</id>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>sign</goal>
+                  </goals>
+                  <configuration>
+                     <keyname>AGR Admin</keyname>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
 			<plugin>
 				<groupId>${quarkus.platform.group-id}</groupId>
 				<artifactId>quarkus-maven-plugin</artifactId>
