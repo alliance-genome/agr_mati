@@ -9,9 +9,15 @@ okta:
   client:
     id: ""
     secret: ""
-  scopes: openid%20profile%20email
+  scopes: ""
 
 quarkus:
+  http:
+    cors:
+      origins: "*"
+      methods: "*"
+      access-control-max-age: -1
+      headers: "*"
   datasource:
     jdbc:
       driver: org.postgresql.Driver
