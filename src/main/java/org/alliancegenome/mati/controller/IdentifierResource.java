@@ -45,9 +45,9 @@ public class IdentifierResource implements IdentifierResourceRESTInterface {
 			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 			return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
 		} else {
-			Map<String, String> map = new HashMap<>();
-			map.put("value", formatCounter(counter, subdomainEntity));
-			return Response.ok().entity(map).build();
+			Identifier identifier =  new Identifier(counter, subdomainEntity.getCode(), subdomainEntity.getName(),
+				formatCounter(counter, subdomainEntity));
+			return Response.ok().entity(identifier).build();
 		}
 	}
 
