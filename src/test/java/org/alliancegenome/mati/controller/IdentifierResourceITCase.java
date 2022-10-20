@@ -12,7 +12,6 @@ import java.util.Base64;
 
 import static io.restassured.RestAssured.given;
 
-
 @QuarkusTestResource(PostgresResource.class)
 @TestHTTPEndpoint(IdentifierResource.class)
 class IdentifierResourceITCase {
@@ -20,6 +19,7 @@ class IdentifierResourceITCase {
     private final String client_secret= System.getenv("OKTA_CLIENT_SECRET");
     private final String okta_url = System.getenv("OKTA_URL");
     private final String okta_scopes = System.getenv("OKTA_SCOPES");
+
 
     @Test
     void mintIdentifierDiseaseAnnotation() {
@@ -79,45 +79,45 @@ class IdentifierResourceITCase {
         String token = fetchOktaToken(client_id, client_secret, okta_scopes, okta_url);
         String authorization = "Bearer: " + token;
         return given().
-                contentType(ContentType.JSON).
-                header("Accept", "application/json").
-                header("Authorization", authorization).
-                header("subdomain", subdomain).
-                when().
-                put("http://localhost:8081/api/identifier").
-                then().
-                statusCode(200).
-                extract().path("curie").toString();
+            contentType(ContentType.JSON).
+            header("Accept", "application/json").
+            header("Authorization", authorization).
+            header("subdomain", subdomain).
+            when().
+            put("http://localhost:8081/api/identifier").
+            then().
+            statusCode(200).
+            extract().path("curie").toString();
     }
 
     private IdentifiersRange mintIdentifierRange(String subdomain, int howMany) {
         String token = fetchOktaToken(client_id, client_secret, okta_scopes, okta_url);
         String authorization = "Bearer: " + token;
         return given().
-                contentType(ContentType.JSON).
-                header("Accept", "application/json").
-                header("Authorization", authorization).
-                header("subdomain", subdomain).
-                header("value", String.valueOf(howMany)).
-                when().
-                post("http://localhost:8081/api/identifier").
-                then().
-                extract().body().as(IdentifiersRange.class);
+            contentType(ContentType.JSON).
+            header("Accept", "application/json").
+            header("Authorization", authorization).
+            header("subdomain", subdomain).
+            header("value", String.valueOf(howMany)).
+            when().
+            post("http://localhost:8081/api/identifier").
+            then().
+            extract().body().as(IdentifiersRange.class);
     }
 
     private String fetchOktaToken(String client_id, String client_secret, String okta_scopes, String okta_url) {
         String authorization = "Basic " +
-                Base64.getEncoder().encodeToString((client_id+":"+client_secret).getBytes());
+            Base64.getEncoder().encodeToString((client_id+":"+client_secret).getBytes());
         return given().
-                contentType(ContentType.URLENC).
-                header("Accept", "application/json").
-                header("Cache-Control", "no-cache").
-                header("Authorization", authorization).
-                formParam("grant_type", "client_credentials").
-                formParam("scope", okta_scopes).
-                when().
-                post(okta_url + "/oauth2/default/v1/token").
-                then().
-                extract().path("access_token").toString();
+            contentType(ContentType.URLENC).
+            header("Accept", "application/json").
+            header("Cache-Control", "no-cache").
+            header("Authorization", authorization).
+            formParam("grant_type", "client_credentials").
+            formParam("scope", okta_scopes).
+            when().
+            post(okta_url + "/oauth2/default/v1/token").
+            then().
+            extract().path("access_token").toString();
     }
 }
