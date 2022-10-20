@@ -6,6 +6,7 @@ mp:
       issuer: https://dev-000000.okta.com/oauth2/default
 
 okta:
+  url: https://dev-0000000.okta.com
   client:
     id: ""
     secret: ""
