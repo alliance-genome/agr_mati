@@ -18,7 +18,7 @@ class IdentifierResourceITCase {
     private final String client_id = System.getenv("OKTA_CLIENT_ID");
     private final String client_secret= System.getenv("OKTA_CLIENT_SECRET");
     private final String okta_url = System.getenv("OKTA_URL");
-    private final String okta_scopes = System.getenv("OKTA_SCOPES");
+    private  String okta_scopes = System.getenv("OKTA_SCOPES");
 
 
     @Test
