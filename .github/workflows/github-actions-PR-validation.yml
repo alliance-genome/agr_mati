@@ -47,6 +47,11 @@ jobs:
         run: |
           mvn clean package -Dquarkus-profile=test -ntp
       - name: Run Integration tests
+        env:
+          OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
+          OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
+          OKTA_SCOPES: ${{ secrets.OKTA_SCOPES }}
+          OKTA_URL: ${{ secrets.OKTA_URL }}
         run: |
           make integration-test
 

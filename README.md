@@ -79,3 +79,19 @@ headers = {'Authorization': 'Bearer ' + token,
 response = requests.request("GET", url, headers=headers)
 print(response.json())
 ```
+
+## Creating new subdomains
+
+A new subdomain is created with a migration file in:
+
+src/main/resources/db/migration/
+
+like V0002__SCRUM-1493.sql or V0003__SCRUM-2024.sql
+
+The sql for a new PostgreSQL sequence and a new record in the table subdomain must be written, for example:
+
+```sql script
+INSERT INTO subdomain (code, name, description)
+VALUES ('100', 'newSubdomain', 'Description of new Subdomain');
+CREATE SEQUENCE subdomain_newSubdomain_seq;
+```
