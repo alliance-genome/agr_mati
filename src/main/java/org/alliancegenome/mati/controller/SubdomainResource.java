@@ -16,4 +16,3 @@ public interface SubdomainResource extends PanacheEntityResource<SubdomainEntity
     @MethodProperties(exposed = false)
     boolean delete(Long id);
 }
-

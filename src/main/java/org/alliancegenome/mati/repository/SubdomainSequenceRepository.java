@@ -13,8 +13,6 @@ import javax.persistence.Query;
 public class SubdomainSequenceRepository {
     private static final int MAX_NUMBER_IDS = 10000000;
     @Inject
-    SubdomainRepository subdomainRepository;
-    @Inject
     EntityManager entityManager;
 
     public Long getValue(SubdomainEntity subdomainEntity) {

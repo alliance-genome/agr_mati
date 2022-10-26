@@ -40,6 +40,18 @@ QUARKUS_DATASOURCE_PASSWORD=????????
 * Test the swaggerUI in:
 http://localhost:8080/q/swagger-ui/
 
+* Run integration tests locally
+Export the variables needed for tests in shell session:
+```shell script
+export OKTA_CLIENT_ID=0000
+export OKTA_CLIENT_SECRET=0000000
+export OKTA_SCOPES=someScope
+export OKTA_URL=https://dev-0000.okta.com
+```
+Then, do
+```shell script
+make integration-test
+```
 
 ## Developing a client for the MaTI API
 
@@ -92,6 +104,8 @@ The sql for a new PostgreSQL sequence and a new record in the table subdomain mu
 
 ```sql script
 INSERT INTO subdomain (code, name, description)
-VALUES ('100', 'newSubdomain', 'Description of new Subdomain');
+VALUES ('200', 'newSubdomain', 'Description of new Subdomain');
 CREATE SEQUENCE subdomain_newSubdomain_seq;
 ```
+
+Also, please add integration tests in class IdentifierResourceITCase for the new subdomain.

@@ -18,6 +18,6 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 public interface IdentifierFinderRESTInterface {
 
     @GET
-    public Response find( @NotNull(message = "Header does not have Authorization") @HeaderParam("Authorization") final String auth_header,
-                          @NotNull(message = "Header does not have identifier") @HeaderParam("identifier") String identifier);
+    Response find( @NotNull(message = "Header does not have Authorization") @HeaderParam("Authorization") final String auth_header,
+                   @NotNull(message = "Header does not have identifier") @HeaderParam("identifier") String identifier);
 }
