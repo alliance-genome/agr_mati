@@ -24,7 +24,7 @@ public interface IdentifierResourceRESTInterface {
 
 	@Authenticated
 	@GET
-	public Response get(
+	Response get(
 		@NotNull(message = "Header does not have Authorization")
 		@HeaderParam("Authorization") String auth_header,
 		
@@ -34,7 +34,7 @@ public interface IdentifierResourceRESTInterface {
 
 	@Authenticated
 	@PUT
-	public Response increment(
+	Response increment(
 		@NotNull(message = "Header does not have Authorization")
 		@HeaderParam("Authorization")
 		String auth_header,
@@ -47,7 +47,7 @@ public interface IdentifierResourceRESTInterface {
 	@Authenticated
 	@POST
 	@Transactional
-	public Response increment(
+	Response increment(
 		@NotNull(message = "Header does not have Authorization")
 		@HeaderParam("Authorization")
 		String auth_header,
