@@ -16,7 +16,7 @@ jobs:
           echo "Repository ${{ github.repository }}."
           echo "Trigger ref ${{ github.ref }}, base-ref ${{ github.base_ref }}, head_ref ${{ github.head_ref }}."
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Report files updated in PR
         run: |
           git fetch -q origin ${{ github.base_ref }} ${{ github.head_ref }}
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Build docker image
         env:
           ECR_REPOSITORY: agr_mati
