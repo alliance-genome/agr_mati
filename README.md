@@ -74,11 +74,12 @@ Also, please add integration tests in class IdentifierResourceITCase for the new
 ## Releases
 
 ### To Beta environment 
-In the alpha branch, up to date, check the existing tags
+After fetching information, check the existing tags
 ```shell script
+git fetch --all
 git tag 
 ```
-Now, create a pre-release tag, incrementing the last tag:
+Now, create a pre-release tag, incrementing the last tag (example):
 ```shell script
 git tag -a v0.8.0-rc1 -m "MaTi pre-release"
 ```
@@ -91,7 +92,7 @@ This will trigger the GitHub action to do a beta deployment.
 
 ### To Production environment
 
-Now, create a release tag, incrementing the last tag:
+After testing in beta, create a release tag:
 ```shell script
 git tag -a v0.8.0 -m "MaTi release"
 ```
