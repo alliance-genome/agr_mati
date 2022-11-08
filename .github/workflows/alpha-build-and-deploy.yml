@@ -1,9 +1,9 @@
-name: Alpha branch Build and Deployment
+name: Main branch Build and Deployment
 on:
   pull_request:
     types: [closed]
     branches:
-      - alpha
+      - main
 jobs:
   build-and-push-docker-image:
     if: github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no-deploy')

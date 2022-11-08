@@ -15,7 +15,7 @@ import javax.ws.rs.core.Application;
     info = @Info(
         title = "Alliance of Genome Resources MaTI API",
         description = "Minting and Tracking Identifiers - MaTI",
-        version = "1.0 Alpha"
+        version = ""
     ),
     security = {
         @SecurityRequirement(name = "apiKey")
