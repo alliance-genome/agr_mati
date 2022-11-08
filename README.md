@@ -53,10 +53,59 @@ Then, do
 make integration-test
 ```
 
+## Creating new subdomains
+
+A new subdomain is created with a migration file in:
+
+src/main/resources/db/migration/
+
+like V0002__SCRUM-1493.sql or V0003__SCRUM-2024.sql
+
+The sql for a new PostgreSQL sequence and a new record in the table subdomain must be written, for example:
+
+```sql script
+INSERT INTO subdomain (code, name, description)
+VALUES ('200', 'newSubdomain', 'Description of new Subdomain');
+CREATE SEQUENCE subdomain_newSubdomain_seq;
+```
+
+Also, please add integration tests in class IdentifierResourceITCase for the new subdomain.
+
+## Releases
+
+### To Beta environment 
+In the alpha branch, up to date, check the existing tags
+```shell script
+git tag 
+```
+Now, create a pre-release tag, incrementing the last tag:
+```shell script
+git tag -a v0.8.0-rc1 -m "MaTi pre-release"
+```
+Push the tag:
+```shell script
+git push origin --tags
+```
+Draft a release in GitHub (marking Set as pre-release) selecting the tag created and publish. 
+This will trigger the GitHub action to do a beta deployment.
+
+### To Production environment
+
+Now, create a release tag, incrementing the last tag:
+```shell script
+git tag -a v0.8.0 -m "MaTi release"
+```
+Push the tag:
+```shell script
+git push origin --tags
+```
+Draft a release in GitHub selecting the tag created and publish.
+This will trigger the GitHub action to do a production deployment.
+
 ## Developing a client for the MaTI API
 
 The example is in Python, it can be adapted to other languages.
-It requires the .env file  and MaTI running on local 
+It requires the .env file  and MaTI running on local
 
 * Fetch a valid token from okta
 
@@ -91,21 +140,3 @@ headers = {'Authorization': 'Bearer ' + token,
 response = requests.request("GET", url, headers=headers)
 print(response.json())
 ```
-
-## Creating new subdomains
-
-A new subdomain is created with a migration file in:
-
-src/main/resources/db/migration/
-
-like V0002__SCRUM-1493.sql or V0003__SCRUM-2024.sql
-
-The sql for a new PostgreSQL sequence and a new record in the table subdomain must be written, for example:
-
-```sql script
-INSERT INTO subdomain (code, name, description)
-VALUES ('200', 'newSubdomain', 'Description of new Subdomain');
-CREATE SEQUENCE subdomain_newSubdomain_seq;
-```
-
-Also, please add integration tests in class IdentifierResourceITCase for the new subdomain.
