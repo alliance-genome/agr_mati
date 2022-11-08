@@ -3,9 +3,7 @@ on:
   pull_request:
     types: [synchronize, opened, reopened, edited]
     branches:
-      - alpha
-      - beta
-      - production
+      - main
 jobs:
   verify-test-api:
     if: github.event.action != 'edited' || github.event.changes.base
