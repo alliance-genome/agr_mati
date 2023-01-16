@@ -23,5 +23,5 @@ public interface SubdomainResource extends PanacheEntityResource<SubdomainEntity
     long count();
 
     @MethodProperties(exposed = false)
-    public SubdomainEntity get(@PathParam("id") Long id);
+    SubdomainEntity get(@PathParam("id") Long id);
 }
