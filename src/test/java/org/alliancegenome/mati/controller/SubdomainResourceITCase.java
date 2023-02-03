@@ -29,4 +29,13 @@ class SubdomainResourceITCase {
             .then()
             .statusCode(200);
     }
+
+    @Test
+    public void getOne() {
+        given()
+            .when()
+            .get("/api/subdomain?code=1")
+            .then()
+            .statusCode(200);
+    }
 }
