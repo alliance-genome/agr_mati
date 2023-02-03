@@ -1,5 +1,5 @@
 ### Stage 1: build API
-FROM maven:3.8-openjdk-17 as BUILD_API_STAGE
+FROM maven:3.8-eclipse-temurin-17 as BUILD_API_STAGE
 ARG OVERWRITE_VERSION
 WORKDIR /agr_mati
 
@@ -14,7 +14,7 @@ RUN if [ "${OVERWRITE_VERSION}" != "" ]; then \
 RUN mvn -T 8 clean package -Dquarkus.package.type=uber-jar -ntp
 
 ### Stage 2: build final application image
-FROM openjdk:17.0.2-slim
+FROM eclipse-temurin:17-jre-alpine
 ARG OVERWRITE_VERSION
 WORKDIR /agr_mati
 
