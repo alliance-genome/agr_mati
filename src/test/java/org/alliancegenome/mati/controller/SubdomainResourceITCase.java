@@ -45,6 +45,7 @@ class SubdomainResourceITCase {
             .then()
             .statusCode(200).extract().body().as(getSubdomainEntityTypeRef());
 
+        assertThat(result.size(), is(1));
         assertThat(result.get(0).getCode(), is("100"));
     }
 
