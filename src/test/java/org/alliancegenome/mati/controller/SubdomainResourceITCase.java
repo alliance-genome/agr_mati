@@ -1,18 +1,20 @@
 package org.alliancegenome.mati.controller;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusIntegrationTest;
-import io.restassured.response.ValidatableResponse;
-
+import io.restassured.common.mapper.TypeRef;
 import org.alliancegenome.mati.configuration.PostgresResource;
+import org.alliancegenome.mati.entity.SubdomainEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.is;
 
 @QuarkusIntegrationTest
 @QuarkusTestResource(PostgresResource.class)
@@ -37,13 +39,17 @@ class SubdomainResourceITCase {
 
     @Test
     public void getOne() {
-        ValidatableResponse response = given()
-                                       .queryParam("id", "1")
-                                       .when()
-                                       .get("/api/subdomain")
-                                       .then();
-        response.statusCode(200);
+        List<SubdomainEntity> result = given()
+            .when()
+            .get("/api/subdomain?id=1")
+            .then()
+            .statusCode(200).extract().body().as(getSubdomainEntityTypeRef());
 
-        assertThat(response.extract().jsonPath().getList("$").size(), equalTo(1));
+        assertThat(result.get(0).getCode(), is("100"));
+    }
+
+    private TypeRef<List<SubdomainEntity>> getSubdomainEntityTypeRef() {
+        return new TypeRef<List<SubdomainEntity>>() {
+        };
     }
 }
