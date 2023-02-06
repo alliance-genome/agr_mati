@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.alliancegenome</groupId>
 	<artifactId>agr_mati</artifactId>
-	<version>0.0.0</version>
+	<version>0.0.1</version>
 	<name>AGR Minting and Tracking Identifiers (MaTI)</name>
 	<description>This software is for using the mati as a library</description>
 	<url>https://github.com/alliance-genome/agr_mati</url>
@@ -14,7 +14,8 @@
 	<properties>
 		<compiler-plugin.version>3.8.1</compiler-plugin.version>
 		<failsafe.useModulePath>false</failsafe.useModulePath>
-		<maven.compiler.release>17</maven.compiler.release>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
@@ -181,7 +182,7 @@
          <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.7</version>
+            <version>1.6.13</version>
             <extensions>true</extensions>
             <configuration>
                <serverId>ossrh</serverId>
