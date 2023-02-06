@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.alliancegenome</groupId>
 	<artifactId>agr_mati</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.0</version>
 	<name>AGR Minting and Tracking Identifiers (MaTI)</name>
 	<description>This software is for using the mati as a library</description>
 	<url>https://github.com/alliance-genome/agr_mati</url>
