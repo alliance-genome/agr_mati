@@ -84,7 +84,7 @@ jobs:
     - name: Generate deployment package
       run: zip -r ${{ github.event.release.tag_name }}.zip docker-compose.yml .ebextensions/
     - name: Store deployment package in cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ github.event.release.tag_name }}.zip
         key: ${{github.workflow}}.${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-eb-deployment-zip
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: Fetch deployment package from cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ github.event.release.tag_name }}.zip
         key: ${{github.workflow}}.${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-eb-deployment-zip
@@ -159,7 +159,7 @@ jobs:
             }
           ]
     - name: Fetch deployment package from cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ github.event.release.tag_name }}.zip
         key: ${{github.workflow}}.${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-eb-deployment-zip
