@@ -1,11 +1,11 @@
 package org.alliancegenome.mati.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Entity(name = "Subdomain")
