@@ -3,10 +3,10 @@ package org.alliancegenome.mati.controller;
 import io.quarkus.hibernate.orm.rest.data.panache.PanacheEntityResource;
 import io.quarkus.rest.data.panache.MethodProperties;
 import io.quarkus.rest.data.panache.ResourceProperties;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.core.Response;
 import org.alliancegenome.mati.entity.SubdomainEntity;
 
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
 
 @ResourceProperties(paged = false)
 public interface SubdomainResource extends PanacheEntityResource<SubdomainEntity, Long> {

@@ -1,9 +1,8 @@
 package org.alliancegenome.mati.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.alliancegenome.mati.entity.SubdomainEntity;
-
-import javax.enterprise.context.ApplicationScoped;
 
 
 @ApplicationScoped

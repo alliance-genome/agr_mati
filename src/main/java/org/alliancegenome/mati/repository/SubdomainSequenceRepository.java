@@ -1,12 +1,13 @@
 package org.alliancegenome.mati.repository;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import lombok.NoArgsConstructor;
 import org.alliancegenome.mati.entity.SubdomainEntity;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.inject.Inject;
+
 
 @NoArgsConstructor
 @ApplicationScoped
