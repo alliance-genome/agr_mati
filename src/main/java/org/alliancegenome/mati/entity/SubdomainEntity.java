@@ -8,6 +8,9 @@ import org.hibernate.Hibernate;
 
 import java.util.Objects;
 
+/** AGR has identifiers per subdomain (entity or class
+ * for example: disease_annotation, gene, allele
+ * */
 @Entity(name = "Subdomain")
 @Table(name = "subdomain")
 @Getter

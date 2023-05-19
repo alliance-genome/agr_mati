@@ -8,6 +8,9 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import lombok.extern.jbosslog.JBossLog;
 
+/** Allows to send the exceptions we are not capturing with ConstraintViolationExceptionMapper to
+ * the standard error log
+ * */
 @Provider
 @JBossLog
 public class ThrowableMapper implements ExceptionMapper<Throwable> {

@@ -9,6 +9,7 @@ import org.eclipse.microprofile.openapi.annotations.info.Info;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
 
+/** Main class with openapi specification */
 @ApplicationPath("/api")
 @OpenAPIDefinition(
     info = @Info(

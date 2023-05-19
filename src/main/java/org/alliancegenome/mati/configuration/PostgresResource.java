@@ -9,6 +9,7 @@ import org.testcontainers.shaded.com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import java.util.Optional;
 
+/** Docker container with Postgres database to run in our integration tests */
 public class PostgresResource implements QuarkusTestResourceLifecycleManager, DevServicesContext.ContextAware {
 
     private Optional<String> containerNetworkId;
