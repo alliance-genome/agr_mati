@@ -9,6 +9,7 @@ import org.alliancegenome.mati.entity.SubdomainEntity;
 import jakarta.inject.Inject;
 
 
+/** Manipulates the counters, represented by PostgresSQL sequences, in the database */
 @NoArgsConstructor
 @ApplicationScoped
 public class SubdomainSequenceRepository {
@@ -16,6 +17,11 @@ public class SubdomainSequenceRepository {
     @Inject
     EntityManager entityManager;
 
+    /**
+     * Get the last minted identifier
+     * @param subdomainEntity subdomain given
+     * @return the value of the counter
+     */
     public Long getValue(SubdomainEntity subdomainEntity) {
         String sequenceName = "subdomain_" + subdomainEntity.getName() + "_seq";
         String sql = "SELECT COALESCE( (SELECT last_value FROM pg_sequences WHERE sequencename = :sequenceName)," +
@@ -30,6 +36,11 @@ public class SubdomainSequenceRepository {
         }
     }
 
+    /**
+     * increment the subdomain counter by 1
+     * @param subdomainEntity subdomain given
+     * @return the value of the counter
+     */
     public Long increment(SubdomainEntity subdomainEntity) {
         String sequenceName = "subdomain_" + subdomainEntity.getName() + "_seq";
         String sql = "SELECT NEXTVAL(:sequenceName)";
@@ -42,6 +53,12 @@ public class SubdomainSequenceRepository {
         }
     }
 
+    /**
+     * increment the subdomain counter by the given value
+     * @param subdomainEntity subdomain given
+     * @param value the given value
+     * @return the value of the counter
+     */
     public Long increment(SubdomainEntity subdomainEntity, int value) {
         if (value < 1  || value > MAX_NUMBER_IDS)
             return -1L;

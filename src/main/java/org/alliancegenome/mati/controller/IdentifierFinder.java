@@ -13,6 +13,7 @@ import org.alliancegenome.mati.interfaces.IdentifierFinderRESTInterface;
 import org.alliancegenome.mati.repository.SubdomainRepository;
 import org.alliancegenome.mati.repository.SubdomainSequenceRepository;
 
+/** Returns information about an AGR identifier (e.g. AGRKB:1010000000000001) */
 @RequestScoped
 public class IdentifierFinder implements IdentifierFinderRESTInterface {
 

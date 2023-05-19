@@ -8,7 +8,7 @@ import jakarta.ws.rs.ext.Provider;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/** Personalize the HTTP response when there are errors due to constraint violations */
 @Provider
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
 

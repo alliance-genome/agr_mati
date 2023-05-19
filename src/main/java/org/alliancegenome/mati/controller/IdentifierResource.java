@@ -17,7 +17,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import jakarta.inject.Inject;
 
-
+/** Endpoints to mint AGR identifiers and get the last value of a counter  */
 @AllArgsConstructor
 @Path("/identifier")
 @Produces(MediaType.APPLICATION_JSON)
