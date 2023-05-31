@@ -12,8 +12,8 @@ import lombok.Getter;
 public class ErrorResponse {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String errorId;
-    private List<ErrorMessage> errors;
+    private final String errorId;
+    private final List<ErrorMessage> errors;
 
     /** Constructor
      * @param errorId useful to track errors on the server logs
@@ -45,8 +45,8 @@ public class ErrorResponse {
     public static class ErrorMessage {
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        private String path;
-        private String message;
+        private final String path;
+        private final String message;
 
         /** Constructor
          * @param path  API path (e.g. /api/identifier)
