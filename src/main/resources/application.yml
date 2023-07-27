@@ -33,6 +33,7 @@ quarkus:
       generation: none
   swagger-ui:
     always-include: true
+  smallrye-openapi.management.enabled: false
 
 "%dev":
   quarkus:
