@@ -1,25 +1,28 @@
 package org.alliancegenome.mati.controller;
 
 import io.quarkus.test.common.QuarkusTestResource;
-import io.quarkus.test.common.http.TestHTTPEndpoint;
+import io.quarkus.test.junit.QuarkusIntegrationTest;
 import io.restassured.http.ContentType;
+
 import org.alliancegenome.mati.configuration.PostgresResource;
 import org.alliancegenome.mati.entity.IdentifiersRange;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.Base64;
+import org.junit.jupiter.api.TestInstance;
 
 import static io.restassured.RestAssured.given;
 
+@QuarkusIntegrationTest
 @QuarkusTestResource(PostgresResource.class)
-@TestHTTPEndpoint(IdentifierResource.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class IdentifierResourceITCase {
-    private final String client_id = System.getenv("OKTA_CLIENT_ID");
-    private final String client_secret= System.getenv("OKTA_CLIENT_SECRET");
-    private final String okta_url = System.getenv("OKTA_URL");
-    private final String okta_scopes = System.getenv("OKTA_SCOPES");
+    private String authorization;
 
+    @BeforeAll
+    void setup() {
+        authorization = "Bearer: " + OktaHelper.fetchOktaToken();
+    }
 
     @Test
     void mintIdentifierDiseaseAnnotation() {
@@ -76,8 +79,6 @@ class IdentifierResourceITCase {
     }
 
     private String mintIdentifier(String subdomain) {
-        String token = fetchOktaToken(client_id, client_secret, okta_scopes, okta_url);
-        String authorization = "Bearer: " + token;
         return given().
             contentType(ContentType.JSON).
             header("Accept", "application/json").
@@ -91,8 +92,6 @@ class IdentifierResourceITCase {
     }
 
     private IdentifiersRange mintIdentifierRange(String subdomain, int howMany) {
-        String token = fetchOktaToken(client_id, client_secret, okta_scopes, okta_url);
-        String authorization = "Bearer: " + token;
         return given().
             contentType(ContentType.JSON).
             header("Accept", "application/json").
@@ -103,21 +102,5 @@ class IdentifierResourceITCase {
             post("http://localhost:8081/api/identifier").
             then().
             extract().body().as(IdentifiersRange.class);
-    }
-
-    private String fetchOktaToken(String client_id, String client_secret, String okta_scopes, String okta_url) {
-        String authorization = "Basic " +
-            Base64.getEncoder().encodeToString((client_id+":"+client_secret).getBytes());
-        return given().
-            contentType(ContentType.URLENC).
-            header("Accept", "application/json").
-            header("Cache-Control", "no-cache").
-            header("Authorization", authorization).
-            formParam("grant_type", "client_credentials").
-            formParam("scope", okta_scopes).
-            when().
-            post(okta_url + "/oauth2/default/v1/token").
-            then().
-            extract().path("access_token").toString();
     }
 }
