@@ -6,7 +6,6 @@ import org.alliancegenome.mati.configuration.PostgresResource;
 import org.junit.jupiter.api.*;
 
 import java.util.Map;
-import org.jboss.logging.Logger;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -16,7 +15,6 @@ import static io.restassured.http.ContentType.JSON;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AdminResourceITCase {
     private String authorization;
-    private static final Logger LOG = Logger.getLogger(AdminResourceITCase.class);
     @BeforeAll
     void setup() {
         authorization = "Bearer: " + OktaHelper.fetchOktaToken();
