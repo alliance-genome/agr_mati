@@ -2,6 +2,7 @@ package org.alliancegenome.mati.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /** AGR range of identifiers
@@ -9,6 +10,7 @@ import lombok.Data;
  * */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class IdentifiersRange {
     private Identifier first;
     private Identifier last;
