@@ -3,7 +3,11 @@ package org.alliancegenome.mati.controller;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 import org.alliancegenome.mati.configuration.PostgresResource;
-import org.junit.jupiter.api.*;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
+
 
 import java.util.Map;
 

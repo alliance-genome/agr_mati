@@ -12,15 +12,15 @@
 	<url>https://github.com/alliance-genome/agr_mati</url>
 
 	<properties>
-		<compiler-plugin.version>3.10.1</compiler-plugin.version>
+		<compiler-plugin.version>3.11.0</compiler-plugin.version>
 		<failsafe.useModulePath>false</failsafe.useModulePath>
 		<maven.compiler.release>17</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 		<quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-		<quarkus.platform.version>3.5.3</quarkus.platform.version>
-		<surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
+		<quarkus.platform.version>3.6.3</quarkus.platform.version>
+		<surefire-plugin.version>3.1.2</surefire-plugin.version>
 	</properties>
 
 	<licenses>
@@ -177,36 +177,34 @@
 					</execution>
 				</executions>
 			</plugin>
-
-         <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.13</version>
-            <extensions>true</extensions>
-            <configuration>
-               <serverId>ossrh</serverId>
-               <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-               <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.6</version>
-            <executions>
-               <execution>
-                  <id>sign-artifacts</id>
-                  <phase>verify</phase>
-                  <goals>
-                     <goal>sign</goal>
-                  </goals>
-                  <configuration>
-                     <keyname>AGR Admin</keyname>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
-
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.13</version>
+				<extensions>true</extensions>
+				<configuration>
+				   <serverId>ossrh</serverId>
+				   <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+				   <autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+				   <execution>
+					  <id>sign-artifacts</id>
+					  <phase>verify</phase>
+					  <goals>
+						 <goal>sign</goal>
+					  </goals>
+					  <configuration>
+						 <keyname>AGR Admin</keyname>
+					  </configuration>
+				   </execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>${quarkus.platform.group-id}</groupId>
 				<artifactId>quarkus-maven-plugin</artifactId>
@@ -241,6 +239,25 @@
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${surefire-plugin.version}</version>
+				<executions>
+				  <execution>
+					<goals>
+					  <goal>integration-test</goal>
+					  <goal>verify</goal>
+					</goals>
+				  </execution>
+				</executions>
+				<configuration>
+				  <systemPropertyVariables>
+					<native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+					<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+					<maven.home>${maven.home}</maven.home>
+				  </systemPropertyVariables>
+				</configuration>
+  			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -262,15 +279,15 @@
 									<goal>integration-test</goal>
 									<goal>verify</goal>
 								</goals>
-								<configuration>
-									<systemPropertyVariables>
-										<native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-										<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-										<maven.home>${maven.home}</maven.home>
-									</systemPropertyVariables>
-								</configuration>
 							</execution>
 						</executions>
+						<configuration>
+							<systemPropertyVariables>
+								<native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+								<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+								<maven.home>${maven.home}</maven.home>
+							</systemPropertyVariables>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
