@@ -38,9 +38,6 @@ jobs:
       - name: Run Maven test
         run: |
           mvn --no-transfer-progress test
-      - name: Run Maven verify
-        run: |
-          mvn --no-transfer-progress --batch-mode --update-snapshots verify
       - name: Package API
         run: |
           mvn clean package -Dquarkus-profile=test -ntp
@@ -52,6 +49,10 @@ jobs:
           OKTA_URL: ${{ secrets.OKTA_URL }}
         run: |
           make integration-test
+      - name: Run Maven verify
+        run: |
+          mvn --no-transfer-progress --batch-mode --update-snapshots verify
+ 
 
   test-build-docker-image:
     if: github.event.action != 'edited' || github.event.changes.base
