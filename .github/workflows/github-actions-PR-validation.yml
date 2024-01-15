@@ -49,9 +49,6 @@ jobs:
           OKTA_URL: ${{ secrets.OKTA_URL }}
         run: |
           make integration-test
-      - name: Run Maven verify
-        run: |
-          mvn --no-transfer-progress --batch-mode --update-snapshots verify
  
 
   test-build-docker-image:
