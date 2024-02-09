@@ -20,17 +20,27 @@ quarkus:
       access-control-max-age: -1
       headers: "*"
   datasource:
+    db-kind: postgresql
     jdbc:
       driver: org.postgresql.Driver
       url: jdbc:postgresql://localhost:5432/mati
     username: postgres
-    password: postgres
+    rolldown:
+      db-kind: postgresql
+      jdbc:
+        url: jdbc:postgresql://localhost:5432/roll
+      username: postgres
   flyway:
     migrate-at-start: true
   hibernate-orm:
     dialect: org.hibernate.dialect.PostgreSQLDialect
     database:
       generation: none
+    packages: ['org.alliancegenome.mati.entity','org.alliancegenome.mati.repository','io.quarkus.hibernate.orm.panache']
+    rolldown:
+      packages: ['org.alliancegenome.mati.rolldownrepository']
+      datasource: rolldown
+    validate-in-dev-mode: false
   swagger-ui:
     always-include: true
   smallrye-openapi.management.enabled: false
@@ -48,5 +58,8 @@ quarkus:
 
 "%test":
   quarkus.datasource.jdbc:
-      driver: org.testcontainers.jdbc.ContainerDatabaseDriver
-      url: jdbc:tc:postgresql:13:///mati
+    driver: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:13:///mati
+  quarkus.datasource.rolldown.jdbc:
+    driver: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:13:///roll
