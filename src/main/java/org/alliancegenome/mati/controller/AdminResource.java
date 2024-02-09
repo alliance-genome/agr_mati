@@ -27,8 +27,7 @@ public class AdminResource implements AdminRESTInterface {
     @Inject
     DBRoller dbRoller;
 
-    @ConfigProperty(name = "NET")
-    String NET;
+    private static final  String NET = System.getenv("NET");;
 
     public Response getCounters() {
         Map<String,Long> counters = subdomainSequenceRepository.getSubdomainCounters();
