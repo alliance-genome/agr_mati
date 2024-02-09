@@ -10,7 +10,7 @@ okta:
   client:
     id: ""
     secret: ""
-  scopes: admin
+  scopes: ""
 
 quarkus:
   http:
