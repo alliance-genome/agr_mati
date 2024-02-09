@@ -24,12 +24,10 @@ quarkus:
     jdbc:
       driver: org.postgresql.Driver
       url: jdbc:postgresql://localhost:5432/mati
-    username: postgres
     rolldown:
       db-kind: postgresql
       jdbc:
         url: jdbc:postgresql://localhost:5432/roll
-      username: postgres
   flyway:
     migrate-at-start: true
   hibernate-orm:
