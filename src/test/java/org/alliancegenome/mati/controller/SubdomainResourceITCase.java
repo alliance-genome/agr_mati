@@ -9,6 +9,7 @@ import org.alliancegenome.mati.configuration.PostgresResource;
 import org.alliancegenome.mati.entity.SubdomainEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import static org.hamcrest.Matchers.is;
 
 @QuarkusIntegrationTest
 @QuarkusTestResource(PostgresResource.class)
+@Order(1)
 class SubdomainResourceITCase {
 
     @BeforeEach
