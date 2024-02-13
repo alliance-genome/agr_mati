@@ -6,16 +6,18 @@ import io.restassured.http.ContentType;
 
 import org.alliancegenome.mati.configuration.PostgresResource;
 import org.alliancegenome.mati.entity.IdentifiersRange;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 
+/**
+ * Tests the /api/identifier (PUT, POST) endpoints
+ * for minting identifiers
+ */
 @QuarkusIntegrationTest
 @QuarkusTestResource(PostgresResource.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Order(2)
 class IdentifierResourceITCase {
     private String authorization;
 
