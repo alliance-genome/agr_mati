@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Store release tag in env
@@ -23,14 +23,14 @@ jobs:
       # This step will configure environment variables to be used by all steps
       # involving AWS interaction further down
       - name: AWS credentials configuration
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{secrets.GH_ACTIONS_AWS_ROLE}}
           role-session-name: gh-actions-${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-build-image
           aws-region: us-east-1
       - name: Amazon ECR login
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -69,7 +69,7 @@ jobs:
             }
           ]
     - name: Check out repository code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - name: Store release tag in env
@@ -86,7 +86,7 @@ jobs:
     - name: Generate deployment package
       run: zip -r ${{ env.tagname }}.zip docker-compose.yml .ebextensions/
     - name: AWS credentials configuration
-      uses: aws-actions/configure-aws-credentials@v2
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: ${{secrets.GH_ACTIONS_AWS_ROLE}}
         role-session-name: gh-actions-${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-eb-deploy
