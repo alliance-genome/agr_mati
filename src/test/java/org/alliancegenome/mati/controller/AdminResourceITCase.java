@@ -1,6 +1,6 @@
 package org.alliancegenome.mati.controller;
 
-import io.quarkus.test.common.QuarkusTestResource;
+import io.quarkus.test.common.WithTestResource;
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 import org.alliancegenome.mati.configuration.PostgresResource;
 import org.junit.jupiter.api.*;
@@ -16,14 +16,14 @@ import static io.restassured.http.ContentType.JSON;
  * that mint some identifiers
  */
 @QuarkusIntegrationTest
-@QuarkusTestResource(PostgresResource.class)
+@WithTestResource(value = PostgresResource.class, restrictToAnnotatedClass = false)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Order(3)
 public class AdminResourceITCase {
 
     @Test
     public void getCounters() {
-        Map<String,Integer> counters = given().
+        Map counters = given().
                 contentType(JSON).
                 header("Accept", "application/json").
                 when().

@@ -1,6 +1,6 @@
 package org.alliancegenome.mati.controller;
 
-import io.quarkus.test.common.QuarkusTestResource;
+import io.quarkus.test.common.WithTestResource;
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 import io.restassured.http.ContentType;
 
@@ -15,7 +15,7 @@ import static io.restassured.RestAssured.given;
  * for minting identifiers
  */
 @QuarkusIntegrationTest
-@QuarkusTestResource(PostgresResource.class)
+@WithTestResource(value = PostgresResource.class, restrictToAnnotatedClass = false)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Order(2)
 class IdentifierResourceITCase {
