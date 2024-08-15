@@ -2,7 +2,7 @@ package org.alliancegenome.mati.controller;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import io.quarkus.test.common.QuarkusTestResource;
+import io.quarkus.test.common.WithTestResource;
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 import io.restassured.common.mapper.TypeRef;
 import org.alliancegenome.mati.configuration.PostgresResource;
@@ -18,7 +18,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 @QuarkusIntegrationTest
-@QuarkusTestResource(PostgresResource.class)
+@WithTestResource(value = PostgresResource.class, restrictToAnnotatedClass = false)
 @Order(1)
 class SubdomainResourceITCase {
 
@@ -52,7 +52,7 @@ class SubdomainResourceITCase {
     }
 
     private TypeRef<List<SubdomainEntity>> getSubdomainEntityTypeRef() {
-        return new TypeRef<List<SubdomainEntity>>() {
+        return new TypeRef<>() {
         };
     }
 }

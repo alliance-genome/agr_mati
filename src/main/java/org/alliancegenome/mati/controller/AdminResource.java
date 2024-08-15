@@ -8,7 +8,6 @@ import org.alliancegenome.mati.configuration.ErrorResponse;
 import org.alliancegenome.mati.interfaces.AdminRESTInterface;
 import org.alliancegenome.mati.repository.SubdomainSequenceRepository;
 import org.alliancegenome.mati.rolldownrepository.DBRoller;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,7 @@ public class AdminResource implements AdminRESTInterface {
     @Inject
     DBRoller dbRoller;
 
-    private static final  String NET = System.getenv("NET");;
+    private static final  String NET = System.getenv("NET");
 
     public Response getCounters() {
         Map<String,Long> counters = subdomainSequenceRepository.getSubdomainCounters();
