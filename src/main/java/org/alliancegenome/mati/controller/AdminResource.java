@@ -2,7 +2,6 @@ package org.alliancegenome.mati.controller;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import org.alliancegenome.mati.configuration.ErrorResponse;
 import org.alliancegenome.mati.interfaces.AdminRESTInterface;
@@ -43,7 +42,6 @@ public class AdminResource implements AdminRESTInterface {
      * @param auth_header with authorization
      * @return a success/failure HTTP response
      */
-    @Transactional
     public Response rolldown_for_curation(String auth_header) {
         if (NET.equals("alpha")) {
             return Response.ok().build();
