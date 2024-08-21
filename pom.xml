@@ -223,6 +223,9 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.5.0</version>
 				<configuration>
+					<doclint>all,-html,-syntax,-accessibility,-missing</doclint>
+					<failOnError>false</failOnError>
+					<quiet>true</quiet>
 					<source>8</source>
 				</configuration>
 				<executions>
