@@ -43,7 +43,6 @@ public class AdminResource implements AdminRESTInterface {
      * @param auth_header with authorization
      * @return a success/failure HTTP response
      */
-    @Transactional
     public Response rolldown_for_curation(String auth_header) {
         if (NET.equals("alpha")) {
             return Response.ok().build();
