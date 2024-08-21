@@ -3,19 +3,17 @@ package org.alliancegenome.mati.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.core.Response;
+import jakarta.inject.Inject;
 
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.ws.rs.core.Response;
 import org.alliancegenome.mati.configuration.ErrorResponse;
 import org.alliancegenome.mati.entity.SubdomainEntity;
 import org.alliancegenome.mati.interfaces.IdentifierFinderRESTInterface;
 import org.alliancegenome.mati.repository.SubdomainRepository;
 import org.alliancegenome.mati.repository.SubdomainSequenceRepository;
 
+/** Returns information about an AGR identifier (e.g. AGRKB:1010000000000001) */
 @RequestScoped
 public class IdentifierFinder implements IdentifierFinderRESTInterface {
 

@@ -1,15 +1,11 @@
 package org.alliancegenome.mati.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import lombok.AllArgsConstructor;
 import org.alliancegenome.mati.configuration.ErrorResponse;
 import org.alliancegenome.mati.entity.Identifier;
 import org.alliancegenome.mati.entity.IdentifiersRange;
@@ -19,8 +15,9 @@ import org.alliancegenome.mati.repository.SubdomainRepository;
 import org.alliancegenome.mati.repository.SubdomainSequenceRepository;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
-import lombok.AllArgsConstructor;
+import jakarta.inject.Inject;
 
+/** Endpoints to mint AGR identifiers and get the last value of a counter  */
 @AllArgsConstructor
 @Path("/identifier")
 @Produces(MediaType.APPLICATION_JSON)
@@ -33,10 +30,8 @@ public class IdentifierResource implements IdentifierResourceRESTInterface {
 	SubdomainRepository subdomainRepository;
 
 	private String formatCounter(Long counter, SubdomainEntity subdomainEntity) {
-		StringBuffer identifier = new StringBuffer("AGRKB:");
-		identifier.append(subdomainEntity.getCode());
-		identifier.append(String.format("%0" + 12 + "d", counter));
-		return identifier.toString();
+		return "AGRKB:" + subdomainEntity.getCode() +
+				String.format("%0" + 12 + "d", counter);
 	}
 
 	private Response makeResultResponse(SubdomainEntity subdomainEntity, Long counter) {
@@ -96,7 +91,7 @@ public class IdentifierResource implements IdentifierResourceRESTInterface {
 			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 			return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
 		}
-		Long firstValue = subdomainSequenceRepository.getValue(subdomainEntity) + 1;
+		long firstValue = subdomainSequenceRepository.getValue(subdomainEntity) + 1;
 		Long lastValue = subdomainSequenceRepository.increment(subdomainEntity, value);
 		if (firstValue == -1L || lastValue == -1L) {
 			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier.post","failure incrementing subdomain " + subdomainEntity.getCode());

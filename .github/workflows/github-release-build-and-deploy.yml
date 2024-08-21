@@ -4,19 +4,21 @@ on:
     types: [published]
 jobs:
   build-release-image:
+    permissions:
+      id-token: write # This is required for requesting the JWT for gaining permissions to assume the IAM role to perform AWS actions
     runs-on: ubuntu-20.04
     steps:
     - name: Check out repository code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: AWS credentials configuration
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        role-to-assume: ${{secrets.GH_ACTIONS_AWS_ROLE}}
+        role-session-name: gh-actions-${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-build-image
         aws-region: us-east-1
     - name: Amazon ECR login
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      uses: aws-actions/amazon-ecr-login@v2
     - name: Build, tag, and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -29,16 +31,15 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Set up Maven Central Repository
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          java-version: '17'
+          distribution: 'temurin'
           server-id: ossrh
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-      - run: cp src/main/resources/application.properties.defaults src/main/resources/application.properties
       - name: Set Proper version
         run: mvn versions:set -ntp -DnewVersion=${{ github.event.release.tag_name }}
       - id: install-secret-key
@@ -47,12 +48,33 @@ jobs:
           cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
       - name: Publish package
-        run: mvn --batch-mode deploy
+        run: mvn --batch-mode deploy -DskipITs=true
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
   generate-deployment-package:
     needs: [build-release-image]
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+    - name: Save mati app version to be deployed in EB env variables through config file
+      run: |
+        cat .ebextensions/version.config
+        sed -i.bak "s/0.0.0/${{ github.event.release.tag_name }}/g" .ebextensions/version.config
+        cat .ebextensions/version.config
+    - name: Generate deployment package
+      run: zip -r ${{ github.event.release.tag_name }}.zip docker-compose.yml .ebextensions/
+    - name: Store deployment package in cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ github.event.release.tag_name }}.zip
+        key: ${{github.workflow}}.${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-eb-deployment-zip
+  deploy-to-production:
+    if: github.event.release.prerelease == false
+    permissions:
+      id-token: write # This is required for requesting the JWT for gaining permissions to assume the IAM role to perform AWS actions
+    needs: [generate-deployment-package]
     runs-on: ubuntu-20.04
     steps:
     - name: Slack Notification
@@ -70,40 +92,28 @@ jobs:
               "fields": [
                 {
                   "title": "GitHub Actions URL",
-                  "value": "${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}"
+                  "value": "${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}"
                 }
               ]
             }
           ]
-    - name: Check out repository code
-      uses: actions/checkout@v2
-    - name: Save mati app version to be deployed in EB env variables through config file
-      run: |
-        cat .ebextensions/version.config
-        sed -i.bak "s/0.0.0/${{ github.event.release.tag_name }}/g" .ebextensions/version.config
-        cat .ebextensions/version.config
-    - name: Generate deployment package
-      run: zip -r ${{ github.event.release.tag_name }}.zip docker-compose.yml .ebextensions/
-    - name: Store deployment package in cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ github.event.release.tag_name }}.zip
-        key: ${{github.workflow}}.${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-eb-deployment-zip
-  deploy-to-production:
-    if: github.event.release.prerelease == false
-    needs: [generate-deployment-package]
-    runs-on: ubuntu-20.04
-    steps:
     - name: Fetch deployment package from cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ github.event.release.tag_name }}.zip
         key: ${{github.workflow}}.${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-eb-deployment-zip
-    - name: Deploy to EB
-      uses: einaregilsson/beanstalk-deploy@v14
+    - name: AWS credentials configuration
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        role-to-assume: ${{secrets.GH_ACTIONS_AWS_ROLE}}
+        role-session-name: gh-actions-${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-eb-deploy-production
+        aws-region: us-east-1
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v22
+      with:
+        aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws_session_token: ${{ env.AWS_SESSION_TOKEN }}
         application_name: mati-app
         environment_name: mati-production
         version_label: ${{ github.event.release.tag_name }}
@@ -136,6 +146,8 @@ jobs:
           ]
   deploy-to-beta:
     if: github.event.release.prerelease == true
+    permissions:
+      id-token: write # This is required for requesting the JWT for gaining permissions to assume the IAM role to perform AWS actions
     needs: [generate-deployment-package]
     runs-on: ubuntu-20.04
     steps:
@@ -154,21 +166,28 @@ jobs:
               "fields": [
                 {
                   "title": "GitHub Actions URL",
-                  "value": "${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}"
+                  "value": "${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}"
                 }
               ]
             }
           ]
     - name: Fetch deployment package from cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ github.event.release.tag_name }}.zip
         key: ${{github.workflow}}.${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-eb-deployment-zip
-    - name: Deploy to EB
-      uses: einaregilsson/beanstalk-deploy@v14
+    - name: AWS credentials configuration
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        role-to-assume: ${{secrets.GH_ACTIONS_AWS_ROLE}}
+        role-session-name: gh-actions-${{github.run_id}}.${{github.run_number}}.${{github.run_attempt}}-eb-deploy-beta
+        aws-region: us-east-1
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v22
+      with:
+        aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws_session_token: ${{ env.AWS_SESSION_TOKEN }}
         application_name: mati-app
         environment_name: mati-beta
         version_label: ${{ github.event.release.tag_name }}

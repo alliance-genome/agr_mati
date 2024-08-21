@@ -40,11 +40,73 @@ QUARKUS_DATASOURCE_PASSWORD=????????
 * Test the swaggerUI in:
 http://localhost:8080/q/swagger-ui/
 
+* Run integration tests locally
+Export the variables needed for tests in shell session:
+```shell script
+export OKTA_CLIENT_ID=0000
+export OKTA_CLIENT_SECRET=0000000
+export OKTA_SCOPES=someScope
+export OKTA_URL=https://dev-0000.okta.com
+```
+Then, do
+```shell script
+make integration-test
+```
+
+## Creating new subdomains
+
+A new subdomain is created with a migration file in:
+
+src/main/resources/db/migration/
+
+like V0002__SCRUM-1493.sql or V0003__SCRUM-2024.sql
+
+The sql for a new PostgreSQL sequence and a new record in the table subdomain must be written, for example:
+
+```sql script
+INSERT INTO subdomain (code, name, description)
+VALUES ('200', 'newSubdomain', 'Description of new Subdomain');
+CREATE SEQUENCE subdomain_newSubdomain_seq;
+```
+
+Also, please add integration tests in class IdentifierResourceITCase for the new subdomain.
+
+## Releases
+
+### To Beta environment 
+After fetching information, check the existing tags
+```shell script
+git fetch --all
+git tag 
+```
+Now, create a pre-release tag, incrementing the last tag (example):
+```shell script
+git tag -a v0.8.0-rc1 -m "MaTi pre-release"
+```
+Push the tag:
+```shell script
+git push origin --tags
+```
+Draft a release in GitHub (marking Set as pre-release) selecting the tag created and publish. 
+This will trigger the GitHub action to do a beta deployment.
+
+### To Production environment
+
+After testing in beta, create a release tag:
+```shell script
+git tag -a v0.8.0 -m "MaTi release"
+```
+Push the tag:
+```shell script
+git push origin --tags
+```
+Draft a release in GitHub selecting the tag created and publish.
+This will trigger the GitHub action to do a production deployment.
 
 ## Developing a client for the MaTI API
 
 The example is in Python, it can be adapted to other languages.
-It requires the .env file  and MaTI running on local 
+It requires the .env file  and MaTI running on local
 
 * Fetch a valid token from okta
 
