@@ -15,7 +15,7 @@ import static io.restassured.RestAssured.given;
  * for minting identifiers
  */
 @QuarkusIntegrationTest
-@WithTestResource(value = PostgresResource.class, restrictToAnnotatedClass = false)
+@WithTestResource(value = PostgresResource.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Order(2)
 class IdentifierResourceITCase {
