@@ -18,7 +18,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 @QuarkusIntegrationTest
-@WithTestResource(value = PostgresResource.class, restrictToAnnotatedClass = false)
+@WithTestResource(value = PostgresResource.class)
 @Order(1)
 class SubdomainResourceITCase {
 

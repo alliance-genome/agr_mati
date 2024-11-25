@@ -16,7 +16,7 @@ import static io.restassured.http.ContentType.JSON;
  * that mint some identifiers
  */
 @QuarkusIntegrationTest
-@WithTestResource(value = PostgresResource.class, restrictToAnnotatedClass = false)
+@WithTestResource(value = PostgresResource.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Order(3)
 public class AdminResourceITCase {
