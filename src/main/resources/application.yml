@@ -17,8 +17,8 @@ quarkus:
     cors:
       origins: "*"
       methods: "*"
-      access-control-max-age: -1
-      headers: "*"
+      access-control-max-age: 600
+      headers: "Authorization, subdomain, value"
   datasource:
     db-kind: postgresql
     jdbc:

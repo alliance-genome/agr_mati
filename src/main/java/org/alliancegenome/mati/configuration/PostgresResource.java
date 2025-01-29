@@ -9,35 +9,43 @@ import org.testcontainers.shaded.com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import java.util.Optional;
 
-/** Docker container with Postgres database to run in our integration tests */
+/** Docker container with Postgres databases to run in our integration tests */
 public class PostgresResource implements QuarkusTestResourceLifecycleManager, DevServicesContext.ContextAware {
 
-    private Optional<String> containerNetworkId;
-    private JdbcDatabaseContainer container;
+    private Optional<String> matiContainerNetworkId;
+    private JdbcDatabaseContainer matiContainer;
+    private JdbcDatabaseContainer rolldownContainer;
+    private final String DOCKER_IMAGE = "postgres:13";
 
     @Override
     public void setIntegrationTestContext(DevServicesContext context) {
-        containerNetworkId = context.containerNetworkId();
+        matiContainerNetworkId = context.containerNetworkId();
     }
 
     @Override
     public Map<String, String> start() {
-        container = new PostgreSQLContainer<>("postgres:13").withLogConsumer(outputFrame -> {});
-        containerNetworkId.ifPresent(container::withNetworkMode);
-        container.start();
-
-        String jdbcUrl = container.getJdbcUrl();
-        if (containerNetworkId.isPresent()) {
-            jdbcUrl = fixJdbcUrl(jdbcUrl);
+        matiContainer = new PostgreSQLContainer<>(DOCKER_IMAGE).withDatabaseName("mati").withLogConsumer(outputFrame -> {});
+        matiContainerNetworkId.ifPresent(matiContainer::withNetworkMode);
+        matiContainer.start();
+        String matiJdbcUrl = matiContainer.getJdbcUrl();
+        if (matiContainerNetworkId.isPresent()) {
+            matiJdbcUrl = fixJdbcUrl(matiJdbcUrl, matiContainer);
         }
 
+        rolldownContainer = new PostgreSQLContainer<>(DOCKER_IMAGE).withDatabaseName("roll").withLogConsumer(outputFrame -> {});
+        rolldownContainer.start();
+        String rolldownJdbcUrl = rolldownContainer.getJdbcUrl();
+
         return ImmutableMap.of(
-                "quarkus.datasource.username", container.getUsername(),
-                "quarkus.datasource.password", container.getPassword(),
-                "quarkus.datasource.jdbc.url", jdbcUrl);
+                "quarkus.datasource.username", matiContainer.getUsername(),
+                "quarkus.datasource.password", matiContainer.getPassword(),
+                "quarkus.datasource.jdbc.url", matiJdbcUrl,
+                "quarkus.datasource.rolldown.username", rolldownContainer.getUsername(),
+                "quarkus.datasource.rolldown.password", rolldownContainer.getPassword(),
+                "quarkus.datasource.rolldown.jdbc.url", rolldownJdbcUrl);
     }
 
-    private String fixJdbcUrl(String jdbcUrl) {
+    private String fixJdbcUrl(String jdbcUrl, JdbcDatabaseContainer container) {
         String hostPort = container.getHost() + ':' + container.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT);
         String networkHostPort =
                 container.getCurrentContainerInfo().getConfig().getHostName()
@@ -47,6 +55,5 @@ public class PostgresResource implements QuarkusTestResourceLifecycleManager, De
     }
 
     @Override
-    public void stop() {
-    }
+    public void stop() { }
 }
