@@ -6,7 +6,7 @@ jobs:
   build-release-image:
     permissions:
       id-token: write # This is required for requesting the JWT for gaining permissions to assume the IAM role to perform AWS actions
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
     - name: Check out repository code
       uses: actions/checkout@v4
@@ -28,14 +28,14 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.event.release.tag_name }}
   build-deploy-maven-central-package:
     needs: [build-release-image]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Set up Maven Central Repository
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
           server-id: ossrh
           server-username: MAVEN_USERNAME
@@ -54,7 +54,7 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
   generate-deployment-package:
     needs: [build-release-image]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
     - name: Check out repository code
       uses: actions/checkout@v4
@@ -75,7 +75,7 @@ jobs:
     permissions:
       id-token: write # This is required for requesting the JWT for gaining permissions to assume the IAM role to perform AWS actions
     needs: [generate-deployment-package]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
     - name: Slack Notification
       uses: tokorom/action-slack-incoming-webhook@main
