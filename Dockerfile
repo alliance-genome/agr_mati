@@ -1,5 +1,5 @@
 ### Stage 1: build API
-FROM maven:3.8-eclipse-temurin-17 as BUILD_API_STAGE
+FROM maven:3.9-eclipse-temurin-21 as BUILD_API_STAGE
 ARG OVERWRITE_VERSION
 WORKDIR /agr_mati
 
@@ -14,7 +14,7 @@ RUN if [ "${OVERWRITE_VERSION}" != "" ]; then \
 RUN mvn -T 8 clean package -Dquarkus.package.type=uber-jar -ntp
 
 ### Stage 2: build final application image
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 ARG OVERWRITE_VERSION
 WORKDIR /agr_mati
 
@@ -31,3 +31,6 @@ ENV QUARKUS_DATASOURCE_PASSWORD postgres
 
 # Start the application
 CMD ["java", "-Xmx820m", "-jar", "agr_mati-runner.jar"]
+
+
+
