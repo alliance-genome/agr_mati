@@ -13,18 +13,17 @@ import java.util.Optional;
 public class PostgresResource implements QuarkusTestResourceLifecycleManager, DevServicesContext.ContextAware {
 
     private Optional<String> matiContainerNetworkId;
-    private JdbcDatabaseContainer matiContainer;
-    private JdbcDatabaseContainer rolldownContainer;
-    private final String DOCKER_IMAGE = "postgres:13";
 
-    @Override
+	@Override
     public void setIntegrationTestContext(DevServicesContext context) {
         matiContainerNetworkId = context.containerNetworkId();
     }
 
     @Override
     public Map<String, String> start() {
-        matiContainer = new PostgreSQLContainer<>(DOCKER_IMAGE).withDatabaseName("mati").withLogConsumer(outputFrame -> {});
+		String DOCKER_IMAGE = "postgres:13";
+		JdbcDatabaseContainer matiContainer = new PostgreSQLContainer<>(DOCKER_IMAGE).withDatabaseName("mati").withLogConsumer(outputFrame -> {
+		});
         matiContainerNetworkId.ifPresent(matiContainer::withNetworkMode);
         matiContainer.start();
         String matiJdbcUrl = matiContainer.getJdbcUrl();
@@ -32,7 +31,8 @@ public class PostgresResource implements QuarkusTestResourceLifecycleManager, De
             matiJdbcUrl = fixJdbcUrl(matiJdbcUrl, matiContainer);
         }
 
-        rolldownContainer = new PostgreSQLContainer<>(DOCKER_IMAGE).withDatabaseName("roll").withLogConsumer(outputFrame -> {});
+		JdbcDatabaseContainer rolldownContainer = new PostgreSQLContainer<>(DOCKER_IMAGE).withDatabaseName("roll").withLogConsumer(outputFrame -> {
+		});
         rolldownContainer.start();
         String rolldownJdbcUrl = rolldownContainer.getJdbcUrl();
 

@@ -2,7 +2,6 @@ package org.alliancegenome.mati.controller;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import org.alliancegenome.mati.configuration.ErrorResponse;
 import org.alliancegenome.mati.interfaces.AdminRESTInterface;
@@ -33,7 +32,7 @@ public class AdminResource implements AdminRESTInterface {
         if (counters.isEmpty()) {
             ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("admin.getCounters","No subdomains in database");
             ErrorResponse errorResponse = new ErrorResponse(errorMessage);
-            Response.serverError().entity(errorResponse).build();
+            return Response.serverError().entity(errorResponse).build();
         }
         return Response.ok().entity(counters).build();
     }

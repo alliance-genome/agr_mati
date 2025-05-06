@@ -40,10 +40,10 @@ public class AdminResourceITCase {
             statusCode(200)
             .extract().body().as(Map.class);
 
-        Assertions.assertEquals(counters.get("disease_annotation"), 5);
-        Assertions.assertEquals(counters.get("person"), 4);
-        Assertions.assertEquals(counters.get("resource"), 6);
-        Assertions.assertEquals(counters.get("reference"), 3);
+        Assertions.assertEquals(5, counters.get("disease_annotation"));
+        Assertions.assertEquals(4, counters.get("person"));
+        Assertions.assertEquals(6, counters.get("resource"));
+        Assertions.assertEquals(3, counters.get("reference"));
     }
 
     /**
@@ -54,7 +54,7 @@ public class AdminResourceITCase {
      * endpoints in development and production modes.
      */
     @Test
-    public void testCurationRolldown() throws Exception {
+    public void testCurationRolldown() {
 
         given().
             contentType(ContentType.JSON).
