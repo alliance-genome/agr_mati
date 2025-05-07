@@ -22,46 +22,41 @@ import static io.restassured.http.ContentType.JSON;
 @Order(3)
 public class AdminResourceITCase {
 
-    private String authorization;
+	private String authorization;
 
-    @BeforeAll
-    void setup() {
-        authorization = "Bearer: " + OktaHelper.fetchOktaToken();
-    }
+	@BeforeAll
+	void setup() {
+		authorization = OktaHelper.createAuthorization();
+	}
 
-    @Test
-    public void getCounters() {
-        Map counters = given().
-            contentType(JSON).
-            header("Accept", "application/json").
-            when().
-            get("http://localhost:8081/api/admin/counters").
-            then().
-            statusCode(200)
-            .extract().body().as(Map.class);
 
-        Assertions.assertEquals(5, counters.get("disease_annotation"));
-        Assertions.assertEquals(4, counters.get("person"));
-        Assertions.assertEquals(6, counters.get("resource"));
-        Assertions.assertEquals(3, counters.get("reference"));
-    }
+	@Test
+	public void getCounters() {
+		Map counters = given()
+			.contentType(JSON)
+			.header("Accept", "application/json")
+			.header("Authorization", authorization)
+			.when()
+			.get("/api/admin/counters")
+			.then()
+			.statusCode(200)
+			.extract().body().as(Map.class);
 
-    /**
-     * The following request using a valid token is *not* authorized
-     * Hypothesis:
-     * In integration-test mode the authentication succeeds only
-     * with the /api/identifier endpoint. However, it succeeds with all
-     * endpoints in development and production modes.
-     */
-    @Test
-    public void testCurationRolldown() {
+		Assertions.assertEquals(5, counters.get("disease_annotation"));
+		Assertions.assertEquals(4, counters.get("person"));
+		Assertions.assertEquals(6, counters.get("resource"));
+		Assertions.assertEquals(3, counters.get("reference"));
+	}
 
-        given().
-            contentType(ContentType.JSON).
-            header("Accept", "application/json").
-            header("Authorization", authorization).
-            when().
-            post("http://localhost:8081/api/admin/rolldown_for_curation").
-            then().statusCode(401);
-    }
+	@Test
+	public void testCurationRolldown() {
+		given()
+			.contentType(ContentType.JSON)
+			.header("Accept", "application/json")
+			.header("Authorization", authorization)
+			.when()
+			.post("/api/admin/rolldown_for_curation")
+			.then()
+			.statusCode(200);
+	}
 }

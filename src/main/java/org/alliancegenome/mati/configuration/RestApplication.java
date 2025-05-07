@@ -9,24 +9,26 @@ import org.eclipse.microprofile.openapi.annotations.info.Info;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
 
-/** Main class with openapi specification */
+/**
+ * Main class with openapi specification
+ */
 @ApplicationPath("/api")
 @OpenAPIDefinition(
-    info = @Info(
-        title = "Alliance of Genome Resources MaTI API",
-        description = "Minting and Tracking Identifiers - MaTI",
-        version = ""
-    ),
-    security = {
-        @SecurityRequirement(name = "apiKey")
-    },
-    components = @Components(
-        securitySchemes = {
-          @SecurityScheme(securitySchemeName = "apiKey",
-            type = SecuritySchemeType.HTTP,
-            scheme = "Bearer")
-        }
-    )
+	info = @Info(
+		title = "Alliance of Genome Resources MaTI API",
+		description = "Minting and Tracking Identifiers - MaTI",
+		version = ""
+	),
+	security = {
+		@SecurityRequirement(name = "apiKey")
+	},
+	components = @Components(
+		securitySchemes = {
+			@SecurityScheme(securitySchemeName = "apiKey",
+				type = SecuritySchemeType.HTTP,
+				scheme = "Bearer")
+		}
+	)
 )
 public class RestApplication extends Application {
 }

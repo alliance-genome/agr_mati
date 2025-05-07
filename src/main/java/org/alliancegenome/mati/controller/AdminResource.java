@@ -19,51 +19,54 @@ import java.util.Map;
 @RequestScoped
 public class AdminResource implements AdminRESTInterface {
 
-    @Inject
-    SubdomainSequenceRepository subdomainSequenceRepository;
+	@Inject
+	SubdomainSequenceRepository subdomainSequenceRepository;
 
-    @Inject
-    DBRoller dbRoller;
+	@Inject
+	DBRoller dbRoller;
 
-    private static final  String NET = System.getenv("NET");
+	private static final String NET = System.getenv("NET");
 
-    public Response getCounters() {
-        Map<String,Long> counters = subdomainSequenceRepository.getSubdomainCounters();
-        if (counters.isEmpty()) {
-            ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("admin.getCounters","No subdomains in database");
-            ErrorResponse errorResponse = new ErrorResponse(errorMessage);
-            return Response.serverError().entity(errorResponse).build();
-        }
-        return Response.ok().entity(counters).build();
-    }
+	/**
+	 * Gets the counters for all the subdomains
+	 * @return a success/failure HTTP response
+	 */
+	public Response getCounters() {
+		Map<String, Long> counters = subdomainSequenceRepository.getSubdomainCounters();
+		if (counters.isEmpty()) {
+			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("admin.getCounters", "No subdomains in database");
+			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+			return Response.serverError().entity(errorResponse).build();
+		}
+		return Response.ok().entity(counters).build();
+	}
 
-    /**
-     * rolls down the status of Mati counters for the curation application
-     * @param auth_header with authorization
-     * @return a success/failure HTTP response
-     */
-    public Response rolldown_for_curation(String auth_header) {
-        if (NET.equals("alpha")) {
-            return Response.ok().build();
-        }
-        List<String> subdomains = List.of("disease_annotation");
-        return rolldown(subdomains);
-    }
+	/**
+	 * rolls down the status of Mati counters for the curation application
+	 * @param authHeader with authorization
+	 * @return a success/failure HTTP response
+	 */
+	public Response rolldown_for_curation(String authHeader) {
+		if (NET.equals("alpha")) {
+			return Response.ok().build();
+		}
+		List<String> subdomains = List.of("disease_annotation");
+		return rolldown(subdomains);
+	}
 
-    /**
-     * rolls down the status of Mati counters from one environment to another
-     * prod -> beta
-     * beta -> alpha
-     * @param subdomains the list of subdomains to roll down
-     * @return a success/failure HTTP response
-     */
-    private Response rolldown(List<String> subdomains) {
-        Map<String,Long> counters = subdomainSequenceRepository.getSubdomainCounters();
-        if (dbRoller.setSubdomainCounters(subdomains, counters)) {
-            return Response.ok().build();
-        }
-        else {
-            return Response.notModified("Failure changing the values").build();
-        }
-    }
+	/**
+	 * rolls down the status of Mati counters from one environment to another
+	 * prod -> beta
+	 * beta -> alpha
+	 * @param subdomains the list of subdomains to roll down
+	 * @return a success/failure HTTP response
+	 */
+	private Response rolldown(List<String> subdomains) {
+		Map<String, Long> counters = subdomainSequenceRepository.getSubdomainCounters();
+		if (dbRoller.setSubdomainCounters(subdomains, counters)) {
+			return Response.ok().build();
+		} else {
+			return Response.notModified("Failure changing the values").build();
+		}
+	}
 }

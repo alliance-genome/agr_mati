@@ -18,21 +18,21 @@ import io.quarkus.security.Authenticated;
 public interface IdentifierResourceRESTInterface {
 
 	/** Endpoint for GET
-	 * @param auth_header authorization token
+	 * @param authHeader authorization token
 	 * @param subdomain AGR subdomain
 	 * @return an HTTP response with the last identifier minted for the given subdomain */
 	@Authenticated
 	@GET
 	Response get(
 		@NotNull(message = "Header does not have Authorization")
-		@HeaderParam("Authorization") String auth_header,
-		
+		@HeaderParam("Authorization") String authHeader,
+
 		@NotNull(message = "Header does not have subdomain")
 		@HeaderParam("subdomain") String subdomain
 	);
 
 	/** Endpoint for PUT: mints a new identifier for the given subdomain
-	 * @param auth_header authorization token
+	 * @param authHeader authorization token
 	 * @param subdomain AGR subdomain
 	 * @return an HTTP response with the identifier minted  */
 	@Authenticated
@@ -40,15 +40,15 @@ public interface IdentifierResourceRESTInterface {
 	Response increment(
 		@NotNull(message = "Header does not have Authorization")
 		@HeaderParam("Authorization")
-		String auth_header,
-		
+		String authHeader,
+
 		@NotNull(message = "Header does not have subdomain")
 		@HeaderParam("subdomain")
 		String subdomain
 	);
 
 	/** Endpoint for POST: mints many identifiers for the given subdomain
-	 * @param auth_header authorization token
+	 * @param authHeader authorization token
 	 * @param subdomain AGR subdomain
 	 * @param value how many consecutive identifiers to mint
 	 * @return an HTTP response with the identifiers minted  */
@@ -58,15 +58,15 @@ public interface IdentifierResourceRESTInterface {
 	Response increment(
 		@NotNull(message = "Header does not have Authorization")
 		@HeaderParam("Authorization")
-		String auth_header,
-		
+		String authHeader,
+
 		@NotNull(message = "Header does not have subdomain")
 		@HeaderParam("subdomain")
 		String subdomain,
-		
+
 		@NotNull(message = "Header does not have increment value")
 		@HeaderParam("value")
 		int value
 	);
-	
+
 }

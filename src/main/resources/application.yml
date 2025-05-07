@@ -28,8 +28,12 @@ quarkus:
       db-kind: postgresql
       jdbc:
         url: jdbc:postgresql://localhost:5432/roll
+        new-connection-sql: >-
+          CREATE SEQUENCE IF NOT EXISTS subdomain_disease_annotation_seq;
   flyway:
     migrate-at-start: true
+    rolldown:
+      locations: classpath:db/roll
   hibernate-orm:
     dialect: org.hibernate.dialect.PostgreSQLDialect
     database:
@@ -39,9 +43,11 @@ quarkus:
       packages: ['org.alliancegenome.mati.rolldownrepository']
       datasource: rolldown
     validate-in-dev-mode: false
+
   swagger-ui:
     always-include: true
   smallrye-openapi.management.enabled: false
+
 
 "%dev":
   quarkus:
@@ -55,9 +61,10 @@ quarkus:
   quarkus.flyway.clean-at-start: false
 
 "%test":
-  quarkus.datasource.jdbc:
-    driver: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:13:///mati
-  quarkus.datasource.rolldown.jdbc:
-    driver: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:13:///roll
+  quarkus:
+    datasource.jdbc:
+      driver: org.testcontainers.jdbc.ContainerDatabaseDriver
+      url: jdbc:tc:postgresql:13:///mati
+    datasource.rolldown.jdbc:
+      driver: org.testcontainers.jdbc.ContainerDatabaseDriver
+      url: jdbc:tc:postgresql:13:///roll

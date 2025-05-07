@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 @Provider
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
 
-    @Override
-    public Response toResponse(ConstraintViolationException e) {
-        List<ErrorResponse.ErrorMessage> errorMessages = e.getConstraintViolations().stream()
-                .map(constraintViolation -> new ErrorResponse.ErrorMessage(constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage()))
-                .collect(Collectors.toList());
-        return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse(errorMessages)).build();
-    }
+	@Override
+	public Response toResponse(ConstraintViolationException e) {
+		List<ErrorResponse.ErrorMessage> errorMessages = e.getConstraintViolations().stream()
+				.map(constraintViolation -> new ErrorResponse.ErrorMessage(constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage()))
+				.collect(Collectors.toList());
+		return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse(errorMessages)).build();
+	}
 }

@@ -15,26 +15,27 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 @Tag(name = "Admin", description = "Administrative tasks")
 public interface AdminRESTInterface {
 
-    /**
-     * Gets the counters for all the subdomains
-     *
-     * @return an HTTP response
-     */
-    @Operation(summary = "Get Counter Values")
-    @Path("/counters")
-    @GET
-    Response getCounters();
+	/**
+	 * Gets the counters for all the subdomains
+	 *
+	 * @return an HTTP response
+	 */
+	@Operation(summary = "Get Counter Values")
+	@Path("/counters")
+	@GET
+	@Authenticated
+	Response getCounters();
 
-    /**
-     * Rolls down the counters to another environment
-     * prod to beta, beta to alpha
-     * @param auth_header Authorization Header
-     * @return an HTTP response
-     */
-    @Operation(summary = "Roll down")
-    @Path("/rolldown_for_curation")
-    @POST
-    @Authenticated
-    Response rolldown_for_curation(
-            @NotNull(message = "Header does not have Authorization")  @HeaderParam("Authorization") String auth_header);
+	/**
+	 * Rolls down the counters to another environment
+	 * prod to beta, beta to alpha
+	 * @param authHeader Authorization Header
+	 * @return an HTTP response
+	 */
+	@Operation(summary = "Roll down")
+	@Path("/rolldown_for_curation")
+	@POST
+	@Authenticated
+	Response rolldown_for_curation(
+			@NotNull(message = "Header does not have Authorization") @HeaderParam("Authorization") String authHeader);
 }

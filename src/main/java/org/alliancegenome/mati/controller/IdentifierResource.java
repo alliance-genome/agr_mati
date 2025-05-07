@@ -30,25 +30,24 @@ public class IdentifierResource implements IdentifierResourceRESTInterface {
 	SubdomainRepository subdomainRepository;
 
 	private String formatCounter(Long counter, SubdomainEntity subdomainEntity) {
-		return "AGRKB:" + subdomainEntity.getCode() +
-				String.format("%0" + 12 + "d", counter);
+		return "AGRKB:" + subdomainEntity.getCode() + String.format("%0" + 12 + "d", counter);
 	}
 
 	private Response makeResultResponse(SubdomainEntity subdomainEntity, Long counter) {
 		if (counter == -1L) {
-			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier","Failure retrieving/incrementing the counter");
+			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier", "Failure retrieving/incrementing the counter");
 			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 			return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
 		} else {
-			Identifier identifier =  new Identifier(counter, subdomainEntity.getCode(), subdomainEntity.getName(),
+			Identifier identifier = new Identifier(counter, subdomainEntity.getCode(), subdomainEntity.getName(),
 				formatCounter(counter, subdomainEntity));
 			return Response.ok().entity(identifier).build();
 		}
 	}
 
 	private Response makeResultResponse(SubdomainEntity subdomainEntity, Long firstValue, Long lastValue) {
-		if ( firstValue==-1L || lastValue==-1L) {
-			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier","Failure incrementing the counter");
+		if (firstValue == -1L || lastValue == -1L) {
+			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier", "Failure incrementing the counter");
 			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 			return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
 		} else {
@@ -62,10 +61,10 @@ public class IdentifierResource implements IdentifierResourceRESTInterface {
 	}
 
 
-	public Response get(String auth_header, String subdomain) {
+	public Response get(String authHeader, String subdomain) {
 		SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
 		if (subdomainEntity == null) {
-			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","ID subdomain " + subdomain +" not found");
+			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get", "ID subdomain " + subdomain + " not found");
 			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 			return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
 		}
@@ -73,10 +72,10 @@ public class IdentifierResource implements IdentifierResourceRESTInterface {
 		return makeResultResponse(subdomainEntity, result);
 	}
 
-	public Response increment(String auth_header, String subdomain) {
+	public Response increment(String authHeader, String subdomain) {
 		SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
 		if (subdomainEntity == null) {
-			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","ID subdomain " + subdomain +" not found");
+			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get", "ID subdomain " + subdomain + " not found");
 			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 			return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
 		}
@@ -84,17 +83,17 @@ public class IdentifierResource implements IdentifierResourceRESTInterface {
 		return makeResultResponse(subdomainEntity, result);
 	}
 
-	public Response increment(String auth_header, String subdomain, int value) {
+	public Response increment(String authHeader, String subdomain, int value) {
 		SubdomainEntity subdomainEntity = subdomainRepository.findByName(subdomain);
 		if (subdomainEntity == null) {
-			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier.post","ID subdomain " + subdomain +" not found");
+			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier.post", "ID subdomain " + subdomain + " not found");
 			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 			return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
 		}
 		long firstValue = subdomainSequenceRepository.getValue(subdomainEntity) + 1;
 		Long lastValue = subdomainSequenceRepository.increment(subdomainEntity, value);
 		if (firstValue == -1L || lastValue == -1L) {
-			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier.post","failure incrementing subdomain " + subdomainEntity.getCode());
+			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("identifier.post", "failure incrementing subdomain " + subdomainEntity.getCode());
 			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 			return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
 

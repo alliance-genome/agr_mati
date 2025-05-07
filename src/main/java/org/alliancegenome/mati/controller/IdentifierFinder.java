@@ -22,36 +22,35 @@ public class IdentifierFinder implements IdentifierFinderRESTInterface {
 	@Inject
 	SubdomainRepository subdomainRepository;
 
-	public Response find(String auth_header, String identifier) {
+	public Response find(String authHeader, String identifier) {
 		String trimmedID = identifier.trim();
 
 		if (!trimmedID.startsWith("AGRKB:") || trimmedID.length() != 21) {
-			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","Wrong ID format -- AGRKB:123123456789012");
+			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get", "Wrong ID format -- AGRKB:123123456789012");
 			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 			return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
 		}
-		String subdomainCode = trimmedID.substring(6,9);
+		String subdomainCode = trimmedID.substring(6, 9);
 		String counter = trimmedID.substring(9);
 		SubdomainEntity subdomainEntity = subdomainRepository.findByCode(subdomainCode);
 		if (subdomainEntity == null) {
-			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","ID subdomain " + subdomainCode +" not found");
+			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get", "ID subdomain " + subdomainCode + " not found");
 			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 			return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
 		}
 		try {
 			Long asNumber = Long.parseLong(counter);
 			String status;
-			if(subdomainSequenceRepository.getValue(subdomainEntity) >= asNumber) {
+			if (subdomainSequenceRepository.getValue(subdomainEntity) >= asNumber) {
 				status = "assigned";
-			}
-			else {
+			} else {
 				status = "unassigned";
 			}
 			Map<String, String> map = new HashMap<>();
 			map.put("status", status);
 			return Response.ok().entity(map).build();
 		} catch (NumberFormatException numberFormatException) {
-			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get","Not a number after prefix AGRKB:");
+			ErrorResponse.ErrorMessage errorMessage = new ErrorResponse.ErrorMessage("finder.get", "Not a number after prefix AGRKB:");
 			ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 			return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
 		}

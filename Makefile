@@ -58,6 +58,9 @@ eb-terminate:
 test:
 	mvn test
 
+checkstyle:
+	mvn checkstyle:check
+
 integration-test:
 	mvn -Dquarkus-profile=test clean package
 	mvn -ntp failsafe:integration-test
