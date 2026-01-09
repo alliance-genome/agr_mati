@@ -43,6 +43,8 @@ jobs:
           mvn clean package -Dquarkus-profile=test -ntp
       - name: Run Integration tests
         env:
+          MP_JWT_VERIFY_ISSUER: ${{ secrets.MP_JWT_VERIFY_ISSUER }}
+          MP_JWT_VERIFY_PUBLICKEY_LOCATION: ${{ secrets.MP_JWT_VERIFY_PUBLICKEY_LOCATION }}
           COGNITO_CLIENT_ID: ${{ secrets.COGNITO_CLIENT_ID }}
           COGNITO_CLIENT_SECRET: ${{ secrets.COGNITO_CLIENT_SECRET }}
           COGNITO_SCOPES: ${{ secrets.COGNITO_SCOPES }}
