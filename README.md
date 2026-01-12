@@ -6,30 +6,25 @@
 * Go to:
   https://alpha-curation.alliancegenome.org/
 * After login, click on the top right user icon, then profile
-* Copy the okta token value (the long string) and use it in the swaggerUI:
+* Copy the Cognito token value (the long string) and use it in the swaggerUI:
   https://alpha-mati.alliancegenome.org/q/swagger-ui/#
   https://beta-mati.alliancegenome.org/q/swagger-ui/#
-* Clicking the Authorize button and pasting the okta token in the ApiKey entry
+* Clicking the Authorize button and pasting the Cognito token in the ApiKey entry
 * Test the endpoints in swagger 
 
 ## Running the application in dev mode
 
-* Create an okta account for development and a new okta application following:
-https://developer.okta.com/blog/2020/12/17/build-and-secure-an-api-in-python-with-fastapi#setting-up-a-new-application-in-okta
- 
 * Run a postgres instance (skip if you are already developing the curation app):
 https://github.com/alliance-genome/agr_curation/blob/alpha/docker/run_postgres
 
-* Create an .env file in folder agr_mati
+* Create an .env file in folder agr_mati (see .env.example for reference)
 ```shell script
-MP_JWT_VERIFY_ISSUER=https://dev-$$$$$$.okta.com/oauth2/default
-MP_JWT_VERIFY_PUBLICKEY_LOCATION=https://dev-$$$$$$.okta.com/oauth2/default/v1/keys
-OKTA_TOKEN_URL=https://dev-$$$$$$.okta.com/oauth2/default/v1/token
-OKTA_CLIENT_ID=??????????
-OKTA_CLIENT_SECRET=?????????????????????????????????
-OKTA_SCOPES=?????????
-QUARKUS_DATASOURCE_USER=????????
-QUARKUS_DATASOURCE_PASSWORD=????????
+MP_JWT_VERIFY_ISSUER=https://cognito-idp.us-east-1.amazonaws.com/<user-pool-id>
+MP_JWT_VERIFY_PUBLICKEY_LOCATION=https://cognito-idp.us-east-1.amazonaws.com/<user-pool-id>/.well-known/jwks.json
+QUARKUS_DATASOURCE_USERNAME=postgres
+QUARKUS_DATASOURCE_PASSWORD=postgres
+QUARKUS_DATASOURCE_ROLLDOWN_USERNAME=postgres
+QUARKUS_DATASOURCE_ROLLDOWN_PASSWORD=postgres
 ```
 
 * Run MaTI in dev mode using:
@@ -41,14 +36,14 @@ QUARKUS_DATASOURCE_PASSWORD=????????
 http://localhost:8080/q/swagger-ui/
 
 * Run integration tests locally
-Export the variables needed for tests in shell session:
+Export the Cognito M2M credentials:
 ```shell script
-export OKTA_CLIENT_ID=0000
-export OKTA_CLIENT_SECRET=0000000
-export OKTA_SCOPES=someScope
-export OKTA_URL=https://dev-0000.okta.com
+export COGNITO_URL=https://auth.alliancegenome.org
+export COGNITO_CLIENT_ID=<client-id>
+export COGNITO_CLIENT_SECRET=<client-secret>
+export COGNITO_SCOPES=<scopes>
 ```
-Then, do
+Then run:
 ```shell script
 make integration-test
 ```
@@ -106,28 +101,28 @@ This will trigger the GitHub action to do a production deployment.
 ## Developing a client for the MaTI API
 
 The example is in Python, it can be adapted to other languages.
-It requires the .env file  and MaTI running on local
+It requires the .env file and MaTI running on local
 
-* Fetch a valid token from okta
+* Fetch a valid token from Cognito
 
 ```python script
 import requests
 from decouple import config
 
-OKTA_CLIENT_ID = config('OKTA_CLIENT_ID')
-OKTA_CLIENT_SECRET = config('OKTA_CLIENT_SECRET')
-OKTA_SCOPES = config('OKTA_SCOPES')
-OKTA_TOKEN_URL = config('OKTA_TOKEN_URL')
+COGNITO_CLIENT_ID = config('COGNITO_CLIENT_ID')
+COGNITO_CLIENT_SECRET = config('COGNITO_CLIENT_SECRET')
+COGNITO_SCOPES = config('COGNITO_SCOPES')
+COGNITO_DOMAIN = config('COGNITO_DOMAIN')
 
 payload = {'grant_type': 'client_credentials',
-           'scope': OKTA_SCOPES}
+           'scope': COGNITO_SCOPES}
 headers = {'Accept': 'application/json',
            'Cache-Control': 'no-cache',
            'Content-Type': 'application/x-www-form-urlencoded'}
 
 response = requests.request(
-    'POST', OKTA_TOKEN_URL, data=payload, headers=headers,
-    auth=(OKTA_CLIENT_ID, OKTA_CLIENT_SECRET))
+    'POST', COGNITO_DOMAIN + '/oauth2/token', data=payload, headers=headers,
+    auth=(COGNITO_CLIENT_ID, COGNITO_CLIENT_SECRET))
 token = response.json()['access_token']
 ```
 

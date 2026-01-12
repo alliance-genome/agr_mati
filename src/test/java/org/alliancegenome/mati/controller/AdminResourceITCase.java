@@ -26,7 +26,7 @@ public class AdminResourceITCase {
 
     @BeforeAll
     void setup() {
-        authorization = "Bearer: " + OktaHelper.fetchOktaToken();
+        authorization = "Bearer: " + CognitoHelper.fetchCognitoToken();
     }
 
     @Test

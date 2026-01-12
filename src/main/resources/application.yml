@@ -2,11 +2,11 @@ mp:
   jwt:
     verify:
       publickey:
-        location: https://dev-00000.okta.com/oauth2/default/v1/keys
-      issuer: https://dev-000000.okta.com/oauth2/default
+        location: ""
+      issuer: ""
 
-okta:
-  url: https://dev-0000000.okta.com
+cognito:
+  url: ""
   client:
     id: ""
     secret: ""
