@@ -59,9 +59,7 @@ test:
 	mvn test
 
 integration-test:
-	mvn -pl api -am -Dquarkus-profile=test clean package
-	mvn -pl api -ntp failsafe:integration-test
-	mvn -pl api failsafe:verify
+	mvn -pl api -am -ntp -Dquarkus-profile=test -Dgpg.skip=true clean verify
 
 verify:
 	mvn verify
