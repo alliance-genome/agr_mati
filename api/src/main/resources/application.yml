@@ -1,0 +1,63 @@
+mp:
+  jwt:
+    verify:
+      publickey:
+        location: ""
+      issuer: ""
+
+cognito:
+  url: ""
+  client:
+    id: ""
+    secret: ""
+  scopes: ""
+
+quarkus:
+  http:
+    cors:
+      origins: "*"
+      methods: "*"
+      access-control-max-age: 600
+      headers: "Authorization, subdomain, value"
+  datasource:
+    db-kind: postgresql
+    jdbc:
+      driver: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5432/mati
+    rolldown:
+      db-kind: postgresql
+      jdbc:
+        url: jdbc:postgresql://localhost:5432/roll
+  flyway:
+    migrate-at-start: true
+  hibernate-orm:
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+    database:
+      generation: none
+    packages: ['org.alliancegenome.mati.entity','org.alliancegenome.mati.api.repository','io.quarkus.hibernate.orm.panache']
+    rolldown:
+      packages: ['org.alliancegenome.mati.api.rolldownrepository']
+      datasource: rolldown
+    validate-in-dev-mode: false
+  swagger-ui:
+    always-include: true
+  smallrye-openapi.management.enabled: false
+
+"%dev":
+  quarkus:
+    flyway:
+      clean-at-start: true
+      log:
+        sql: true
+      statistics: true
+
+"%prod":
+  quarkus.flyway.clean-at-start: false
+
+"%test":
+  quarkus.datasource.jdbc:
+    driver: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:13:///mati
+  quarkus.datasource.rolldown.jdbc:
+    driver: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:13:///roll

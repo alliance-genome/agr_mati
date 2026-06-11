@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.alliancegenome</groupId>
+		<artifactId>agr_mati</artifactId>
+		<version>0.0.0</version>
+	</parent>
+	<artifactId>entity</artifactId>
+	<name>AGR MaTI Entity</name>
+	<description>MaTI identifier model and persistence entities</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- SubdomainEntity extends PanacheEntityBase and uses JPA + Hibernate + Bean Validation.
+		     These are provided so they are available to compile the entity but are NOT transitive to
+		     consumers: a service depending on this module gets the plain DTOs without any Quarkus on
+		     its classpath, and the api application supplies these at runtime. -->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-hibernate-orm-panache</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>
