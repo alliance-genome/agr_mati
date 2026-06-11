@@ -40,7 +40,7 @@ reset-app-version:
 .PHONY: eb-init eb-create eb-deploy eb-terminate
 
 apirun:
-	mvn -pl api -am compile quarkus:dev
+	mvn -pl mati-api -am compile quarkus:dev
 
 eb-init:
 	eb init --region ${AWS_DEFAULT_REGION} -p Docker mati-app
@@ -59,7 +59,7 @@ test:
 	mvn test
 
 integration-test:
-	mvn -pl api -am -ntp -Dquarkus-profile=test -Dgpg.skip=true clean verify
+	mvn -pl mati-api -am -ntp -Dquarkus-profile=test -Dgpg.skip=true clean verify
 
 verify:
 	mvn verify

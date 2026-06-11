@@ -19,7 +19,7 @@ ARG OVERWRITE_VERSION
 WORKDIR /agr_mati
 
 # copy only the artifacts we need from the first stage and discard the rest
-COPY --from=BUILD_API_STAGE /agr_mati/api/target/api-${OVERWRITE_VERSION}-runner.jar ./agr_mati-runner.jar
+COPY --from=BUILD_API_STAGE /agr_mati/mati-api/target/mati-api-${OVERWRITE_VERSION}-runner.jar ./agr_mati-runner.jar
 
 # Expose necessary ports
 EXPOSE 8080

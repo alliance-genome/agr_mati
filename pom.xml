@@ -4,7 +4,7 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.alliancegenome.mati</groupId>
+	<groupId>org.alliancegenome</groupId>
 	<artifactId>agr_mati</artifactId>
 	<version>0.0.0</version>
 	<packaging>pom</packaging>
@@ -13,9 +13,9 @@
 	<url>https://github.com/alliance-genome/agr_mati</url>
 
 	<modules>
-		<module>entity</module>
-		<module>interfaces</module>
-		<module>api</module>
+		<module>mati-entity</module>
+		<module>mati-interfaces</module>
+		<module>mati-api</module>
 	</modules>
 
 	<properties>
@@ -63,13 +63,13 @@
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.alliancegenome.mati</groupId>
-				<artifactId>entity</artifactId>
+				<groupId>org.alliancegenome</groupId>
+				<artifactId>mati-entity</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.alliancegenome.mati</groupId>
-				<artifactId>interfaces</artifactId>
+				<groupId>org.alliancegenome</groupId>
+				<artifactId>mati-interfaces</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

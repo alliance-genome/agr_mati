@@ -13,11 +13,11 @@ cognito:
   scopes: ""
 
 quarkus:
-  # The JAX-RS resource interfaces (e.g. AdminRESTInterface) live in the separate 'interfaces' module. Quarkus does not index dependency jars by default, so resources that carry @Path only on their interface (AdminResource, IdentifierFinder) would not be discovered. Index the dependency so those endpoints register.
+  # The JAX-RS resource interfaces (e.g. AdminRESTInterface) live in the separate mati-interfaces module. Quarkus does not index dependency jars by default, so resources that carry @Path only on their interface (AdminResource, IdentifierFinder) would not be discovered. Index the dependency so those endpoints register.
   index-dependency:
-    interfaces:
-      group-id: org.alliancegenome.mati
-      artifact-id: interfaces
+    mati-interfaces:
+      group-id: org.alliancegenome
+      artifact-id: mati-interfaces
   http:
     cors:
       origins: "*"

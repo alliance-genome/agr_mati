@@ -5,11 +5,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.alliancegenome.mati</groupId>
+		<groupId>org.alliancegenome</groupId>
 		<artifactId>agr_mati</artifactId>
 		<version>0.0.0</version>
 	</parent>
-	<artifactId>entity</artifactId>
+	<artifactId>mati-entity</artifactId>
 	<name>AGR MaTI Entity</name>
 	<description>MaTI identifier model and persistence entities</description>
 
