@@ -4,7 +4,7 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.alliancegenome</groupId>
+	<groupId>org.alliancegenome.mati</groupId>
 	<artifactId>agr_mati</artifactId>
 	<version>0.0.0</version>
 	<packaging>pom</packaging>
@@ -63,12 +63,12 @@
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.alliancegenome</groupId>
+				<groupId>org.alliancegenome.mati</groupId>
 				<artifactId>entity</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.alliancegenome</groupId>
+				<groupId>org.alliancegenome.mati</groupId>
 				<artifactId>interfaces</artifactId>
 				<version>${project.version}</version>
 			</dependency>
