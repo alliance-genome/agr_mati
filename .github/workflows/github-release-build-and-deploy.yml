@@ -41,14 +41,14 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Set Proper version
-        run: mvn versions:set -ntp -DnewVersion=${{ github.event.release.tag_name }}
+        run: mvn versions:set -ntp -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false -DprocessAllModules=true
       - id: install-secret-key
         name: Install gpg secret key
         run: |
           cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
       - name: Publish package
-        run: mvn -ntp --batch-mode deploy -DskipITs=true
+        run: mvn --batch-mode -ntp -Dmaven.test.skip=true deploy
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}

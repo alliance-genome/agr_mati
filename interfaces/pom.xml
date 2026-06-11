@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.alliancegenome</groupId>
+		<artifactId>agr_mati</artifactId>
+		<version>0.0.0</version>
+	</parent>
+	<artifactId>interfaces</artifactId>
+	<name>AGR MaTI Interfaces</name>
+	<description>MaTI REST interface definitions for building API clients</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>jakarta.ws.rs</groupId>
+			<artifactId>jakarta.ws.rs-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.microprofile.openapi</groupId>
+			<artifactId>microprofile-openapi-api</artifactId>
+		</dependency>
+		<!-- @Authenticated is a server-side marker; provided so it is not forced on API clients. -->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-security</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>

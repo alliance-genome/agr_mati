@@ -6,9 +6,9 @@ WORKDIR /agr_mati
 # copy the src code to the container
 COPY ./ ./
 
-# Optionally overwrite the application version stored in the pom.xml
+# Optionally overwrite the application version stored in the pom.xml (all reactor modules)
 RUN if [ "${OVERWRITE_VERSION}" != "" ]; then \
-        mvn versions:set -ntp -DnewVersion=$OVERWRITE_VERSION; \
+        mvn versions:set -ntp -DnewVersion=$OVERWRITE_VERSION -DgenerateBackupPoms=false -DprocessAllModules=true; \
     fi;
 # build the api jar
 RUN mvn -T 8 clean package -Dquarkus.package.type=uber-jar -ntp
@@ -19,7 +19,7 @@ ARG OVERWRITE_VERSION
 WORKDIR /agr_mati
 
 # copy only the artifacts we need from the first stage and discard the rest
-COPY --from=BUILD_API_STAGE /agr_mati/target/agr_mati-${OVERWRITE_VERSION}-runner.jar ./agr_mati-runner.jar
+COPY --from=BUILD_API_STAGE /agr_mati/api/target/api-${OVERWRITE_VERSION}-runner.jar ./agr_mati-runner.jar
 
 # Expose necessary ports
 EXPOSE 8080

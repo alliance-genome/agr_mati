@@ -31,7 +31,7 @@ docker-run:
 	docker-compose up
 
 set-app-version-as-git:
-	mvn versions:set -DnewVersion=${GIT_VERSION}
+	mvn versions:set -DnewVersion=${GIT_VERSION} -DprocessAllModules=true
 
 reset-app-version:
 	mvn versions:revert
@@ -40,7 +40,7 @@ reset-app-version:
 .PHONY: eb-init eb-create eb-deploy eb-terminate
 
 apirun:
-	mvn compile quarkus:dev
+	mvn -pl api -am compile quarkus:dev
 
 eb-init:
 	eb init --region ${AWS_DEFAULT_REGION} -p Docker mati-app
@@ -59,9 +59,7 @@ test:
 	mvn test
 
 integration-test:
-	mvn -Dquarkus-profile=test clean package
-	mvn -ntp failsafe:integration-test
-	mvn failsafe:verify
+	mvn -pl api -am -ntp -Dquarkus-profile=test -Dgpg.skip=true clean verify
 
 verify:
 	mvn verify

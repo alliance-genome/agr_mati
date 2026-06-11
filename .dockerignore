@@ -1,4 +1,5 @@
 target/*
+**/target/
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 .git
