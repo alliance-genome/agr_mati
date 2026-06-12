@@ -1,13 +1,20 @@
 package org.alliancegenome.mati.interfaces;
 
-import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotNull;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+import org.alliancegenome.mati.entity.Identifier;
+import org.alliancegenome.mati.entity.IdentifiersRange;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import io.quarkus.security.Authenticated;
+import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
 
 /** Endpoints to mint AGR identifiers and get the last value of a counter  */
@@ -23,7 +30,7 @@ public interface IdentifierResourceRESTInterface {
 	 * @return an HTTP response with the last identifier minted for the given subdomain */
 	@Authenticated
 	@GET
-	Response get(
+	Identifier get(
 		@NotNull(message = "Header does not have Authorization")
 		@HeaderParam("Authorization") String auth_header,
 		
@@ -37,7 +44,7 @@ public interface IdentifierResourceRESTInterface {
 	 * @return an HTTP response with the identifier minted  */
 	@Authenticated
 	@PUT
-	Response increment(
+	Identifier increment(
 		@NotNull(message = "Header does not have Authorization")
 		@HeaderParam("Authorization")
 		String auth_header,
@@ -55,7 +62,7 @@ public interface IdentifierResourceRESTInterface {
 	@Authenticated
 	@POST
 	@Transactional
-	Response increment(
+	IdentifiersRange increment(
 		@NotNull(message = "Header does not have Authorization")
 		@HeaderParam("Authorization")
 		String auth_header,
