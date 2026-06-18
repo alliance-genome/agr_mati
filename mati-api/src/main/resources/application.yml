@@ -19,6 +19,8 @@ quarkus:
       group-id: org.alliancegenome
       artifact-id: mati-interfaces
   http:
+    root-path: "/"
+    non-application-root-path: "/"
     cors:
       origins: "*"
       methods: "*"
