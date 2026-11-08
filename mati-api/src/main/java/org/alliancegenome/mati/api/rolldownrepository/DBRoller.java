@@ -24,18 +24,21 @@ public class DBRoller {
 
     /**
      *  Creates the SQL sentences for setting the PostgreSQL sequences values
+     * Each counter only moves forward: a target that already minted past the source keeps its own value,
+     * so a rolldown never hands out an identifier the target environment has already used.
      * @param subdomains the list of subdomains
      * @param counters a dictionary mapping subdomains to values (e.g. subdomain_person -> 120 )
      * @return a list of SQL statements. For example:
-     * [ SETVAL('subdomain_name1_seq',10) ... SETVAL('subdomain_nameN_seq',N) ]
+     * [ SETVAL('subdomain_name1_seq',GREATEST(10,(SELECT last_value FROM subdomain_name1_seq))) ... ]
      */
-    private List<String> prepareSETVALStatements(List<String> subdomains, Map<String,Long> counters) {
+    static List<String> prepareSETVALStatements(List<String> subdomains, Map<String,Long> counters) {
         List<String> setVALStatements = new ArrayList<>();
         for (String subdomain : subdomains) {
             if (counters.containsKey(subdomain)) {
                 Long counter = counters.get(subdomain);
                 if (counter > 0) {
-                    setVALStatements.add("SETVAL('subdomain_" + subdomain + "_seq'," + counter + ")");
+                    String sequenceName = "subdomain_" + subdomain + "_seq";
+                    setVALStatements.add("SETVAL('" + sequenceName + "',GREATEST(" + counter + ",(SELECT last_value FROM " + sequenceName + ")))");
                 }
             }
         }

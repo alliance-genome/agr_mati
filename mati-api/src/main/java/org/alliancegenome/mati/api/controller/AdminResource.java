@@ -27,6 +27,18 @@ public class AdminResource implements AdminRESTInterface {
 
     private static final  String NET = System.getenv("NET");
 
+    /**
+     * Subdomains the curation application mints identifiers in. A curation database restored from the
+     * environment above carries identifiers from all of them, so all of their counters must follow it.
+     * reference, resource, person and laboratory belong to the literature system and are not rolled down.
+     */
+    static final List<String> CURATION_SUBDOMAINS = List.of(
+        "disease_annotation", "gene", "allele", "variant", "agm", "construct",
+        "expression_experiment", "expression_annotation", "sequence_targeting_reagent", "antibody",
+        "htp_expression_dataset", "htp_expression_sample", "phenotype_annotation",
+        "molecular_interaction", "genetic_interaction", "assembly_component", "genome_assembly",
+        "cassette", "transgenic_tool");
+
     public Response getCounters() {
         Map<String,Long> counters = subdomainSequenceRepository.getSubdomainCounters();
         if (counters.isEmpty()) {
@@ -43,11 +55,10 @@ public class AdminResource implements AdminRESTInterface {
      * @return a success/failure HTTP response
      */
     public Response rolldown_for_curation(String auth_header) {
-        if (NET.equals("alpha")) {
+        if ("alpha".equals(NET)) {
             return Response.ok().build();
         }
-        List<String> subdomains = List.of("disease_annotation");
-        return rolldown(subdomains);
+        return rolldown(CURATION_SUBDOMAINS);
     }
 
     /**
